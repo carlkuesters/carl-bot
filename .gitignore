@@ -48,7 +48,7 @@ Temporary Items
 
 # targets
 target/
-out/
+dist/
 
 # NetBeans specific #
 nbproject/
