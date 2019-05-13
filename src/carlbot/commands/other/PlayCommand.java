@@ -47,7 +47,7 @@ public class PlayCommand extends AudioCommand {
 
     @Override
     protected void play(GuildMessageReceivedEvent event, AudioPlayer audioPlayer) {
-        audioPlayer.setVolume(50);
+        audioPlayer.setVolume(12);
         audioLibrary.loadTrack(audioIdentifier, audioPlayer::playTrack);
     }
 }

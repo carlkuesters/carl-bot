@@ -24,6 +24,7 @@ public class SaltCommand extends AudioCommand {
     protected void play(GuildMessageReceivedEvent event, AudioPlayer audioPlayer) {
         AudioTrack audioTrack = (name.isEmpty() ? audioLibrary.getRandomTrack() : audioLibrary.getTrack(name));
         if (audioTrack != null) {
+            audioPlayer.setVolume(15);
             audioPlayer.playTrack(audioTrack.makeClone());
         } else {
             event.getChannel().sendMessage("Da war ich nicht salty...").queue();
