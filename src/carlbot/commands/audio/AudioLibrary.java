@@ -21,9 +21,17 @@ public class AudioLibrary {
     public void loadDirectory(String directory) {
         File[] files = new File(directory).listFiles();
         for (File file : files) {
-            String key = file.getName().substring(0, file.getName().length() - 4);
-            loadAndStoreTrack(key, file.getPath());
+            loadFile(file);
         }
+    }
+
+    public void loadFile(String filePath) {
+        loadFile(new File(filePath));
+    }
+
+    private void loadFile(File file) {
+        String key = file.getName().substring(0, file.getName().length() - 4);
+        loadAndStoreTrack(key, file.getPath());
     }
 
     private void loadAndStoreTrack(String key, String identifier) {

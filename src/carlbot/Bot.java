@@ -1,6 +1,7 @@
 package carlbot;
 
 import carlbot.commands.face.FaceImageCommand;
+import carlbot.commands.other.MaxiHiCommand;
 import carlbot.commands.other.PlayCommand;
 import carlbot.commands.other.QuestionCommand;
 import carlbot.commands.other.SaltCommand;
@@ -24,7 +25,8 @@ public class Bot extends ListenerAdapter {
     private Command[] guildCommands = {
         new TextToSpeechCommand(),
         new SaltCommand(),
-        new PlayCommand()
+        new PlayCommand(),
+        new MaxiHiCommand()
     };
 
     void connect() throws LoginException {

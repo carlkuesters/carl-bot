@@ -36,9 +36,15 @@ public abstract class AudioCommand extends Command<GuildMessageReceivedEvent> {
         AudioManager audioManager = event.getGuild().getAudioManager();
         AudioPlayer audioPlayer = audioPlayerManager.createPlayer();
         audioManager.setSendingHandler(new AudioPlayerSendHandler(audioPlayer));
-        VoiceChannel myChannel = event.getMember().getVoiceState().getChannel();
-        play(event, audioPlayer);
-        audioManager.openAudioConnection(myChannel);
+        VoiceChannel myChannel = getVoiceChannelToJoin(event);
+        if (myChannel != null) {
+            play(event, audioPlayer);
+            audioManager.openAudioConnection(myChannel);
+        }
+    }
+
+    protected VoiceChannel getVoiceChannelToJoin(GuildMessageReceivedEvent event) {
+        return event.getMember().getVoiceState().getChannel();
     }
 
     protected abstract void play(GuildMessageReceivedEvent event, AudioPlayer audioPlayer);
