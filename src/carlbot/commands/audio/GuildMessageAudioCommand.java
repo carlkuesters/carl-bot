@@ -18,7 +18,7 @@ public abstract class GuildMessageAudioCommand extends AudioCommand<GuildMessage
             if (bestVoiceChannel != null) {
                 return true;
             } else {
-                event.getChannel().sendMessage("Geh in nen Voice Channel oder schieb mich in einen, dann sags ichs...").queue();
+                event.getChannel().sendMessage("Bringt ja nichts, wenn niemand in einem Voice Channel ist...").queue();
             }
         }
         return false;
