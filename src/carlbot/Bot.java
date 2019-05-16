@@ -61,7 +61,9 @@ public class Bot extends ListenerAdapter {
 
     @Override
     public void onGenericGuildVoice(GenericGuildVoiceEvent event) {
-        if (!event.getMember().getUser().isBot()) {
+        boolean isHuman = (!event.getMember().getUser().isBot());
+        boolean isSelf = (event.getMember().getUser() == event.getJDA().getSelfUser());
+        if (isHuman || isSelf) {
             try {
                 handleEventCommands(event, guildVoiceCommands);
             } catch (Exception ex) {
