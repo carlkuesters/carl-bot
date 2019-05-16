@@ -1,6 +1,6 @@
 package carlbot.commands.other;
 
-import carlbot.commands.audio.AudioCommand;
+import carlbot.commands.audio.GuildMessageAudioCommand;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.source.bandcamp.BandcampAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.http.HttpAudioSourceManager;
@@ -14,7 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-public class PlayCommand extends AudioCommand {
+public class PlayCommand extends GuildMessageAudioCommand {
 
     public PlayCommand() {
         super("!play");

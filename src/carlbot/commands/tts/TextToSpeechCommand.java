@@ -1,11 +1,11 @@
 package carlbot.commands.tts;
 
-import carlbot.commands.audio.AudioCommand;
+import carlbot.commands.audio.GuildMessageAudioCommand;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.source.local.LocalAudioSourceManager;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
-public class TextToSpeechCommand extends AudioCommand {
+public class TextToSpeechCommand extends GuildMessageAudioCommand {
 
     public TextToSpeechCommand() {
         super("!say ");

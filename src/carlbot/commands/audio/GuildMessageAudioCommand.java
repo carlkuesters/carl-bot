@@ -1,0 +1,38 @@
+package carlbot.commands.audio;
+
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
+import net.dv8tion.jda.core.entities.VoiceChannel;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+
+public abstract class GuildMessageAudioCommand extends AudioCommand<GuildMessageReceivedEvent> {
+
+    protected GuildMessageAudioCommand(String commandPrefix) {
+        super(commandPrefix);
+    }
+    private VoiceChannel bestVoiceChannel;
+
+    @Override
+    public boolean isMatching(GuildMessageReceivedEvent event) {
+        if (event.getMessage().getContentRaw().startsWith(commandPrefix)) {
+            bestVoiceChannel = findBestVoiceChannel(event);
+            if (bestVoiceChannel != null) {
+                return true;
+            } else {
+                event.getChannel().sendMessage("Geh in nen Voice Channel oder schieb mich in einen, dann sags ichs...").queue();
+            }
+        }
+        return false;
+    }
+
+    private VoiceChannel findBestVoiceChannel(GuildMessageReceivedEvent event) {
+        VoiceChannel userVoiceChannel = event.getMember().getVoiceState().getChannel();
+        return ((userVoiceChannel != null) ? userVoiceChannel : AudioUtility.getCurrentOrBestVoiceChannel(event.getGuild()));
+    }
+
+    @Override
+    protected VoiceChannel getVoiceChannelToJoin(GuildMessageReceivedEvent event) {
+        return bestVoiceChannel;
+    }
+
+    protected abstract void play(GuildMessageReceivedEvent event, AudioPlayer audioPlayer);
+}

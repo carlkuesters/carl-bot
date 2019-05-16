@@ -1,15 +1,13 @@
 package carlbot;
 
 import carlbot.commands.face.FaceImageCommand;
-import carlbot.commands.other.MaxiHiCommand;
-import carlbot.commands.other.PlayCommand;
-import carlbot.commands.other.QuestionCommand;
-import carlbot.commands.other.SaltCommand;
+import carlbot.commands.other.*;
 import carlbot.commands.tts.TextToSpeechCommand;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.events.Event;
+import net.dv8tion.jda.core.events.guild.voice.GenericGuildVoiceEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
@@ -22,11 +20,14 @@ public class Bot extends ListenerAdapter {
         new FaceImageCommand(),
         new QuestionCommand()
     };
-    private Command[] guildCommands = {
-        new TextToSpeechCommand(),
-        new SaltCommand(),
-        new PlayCommand(),
-        new MaxiHiCommand()
+    private Command[] guildMessageCommands = {
+            new TextToSpeechCommand(),
+            new SaltCommand(),
+            new PlayCommand(),
+            new MaxiWritesHiCommand()
+    };
+    private Command[] guildVoiceCommands = {
+            new PlayMaxiHiOnJoinCommand()
     };
 
     void connect() throws LoginException {
@@ -50,10 +51,21 @@ public class Bot extends ListenerAdapter {
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         if (!event.getAuthor().isBot()) {
             try {
-                handleEventCommands(event, guildCommands);
+                handleEventCommands(event, guildMessageCommands);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 event.getChannel().sendMessage("Da ging was richtig schief...").queue();
+            }
+        }
+    }
+
+    @Override
+    public void onGenericGuildVoice(GenericGuildVoiceEvent event) {
+        if (!event.getMember().getUser().isBot()) {
+            try {
+                handleEventCommands(event, guildVoiceCommands);
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         }
     }
