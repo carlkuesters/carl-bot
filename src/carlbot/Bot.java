@@ -24,7 +24,9 @@ public class Bot extends ListenerAdapter {
             new TextToSpeechCommand(),
             new SaltCommand(),
             new PlayCommand(),
-            new MaxiWritesHiCommand()
+            new MaxiWritesHiCommand(),
+            new HeyCarlCommand(),
+            new ReactOnWaveCommand()
     };
     private Command[] guildVoiceCommands = {
             new PlayMaxiHiOnJoinCommand()
@@ -37,7 +39,7 @@ public class Bot extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        if (!event.getAuthor().isBot()) {
+        if (event.getAuthor() != event.getJDA().getSelfUser()) {
             try {
                 handleEventCommands(event, defaultCommands);
             } catch (Exception ex) {
@@ -49,7 +51,7 @@ public class Bot extends ListenerAdapter {
 
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        if (!event.getAuthor().isBot()) {
+        if (event.getAuthor() != event.getJDA().getSelfUser()) {
             try {
                 handleEventCommands(event, guildMessageCommands);
             } catch (Exception ex) {
