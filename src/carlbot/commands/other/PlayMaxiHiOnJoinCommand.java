@@ -1,5 +1,6 @@
 package carlbot.commands.other;
 
+import carlbot.Bot;
 import carlbot.commands.audio.GuildVoiceAudioCommand;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.source.local.LocalAudioSourceManager;
@@ -12,19 +13,21 @@ import net.dv8tion.jda.core.events.guild.voice.GuildVoiceMoveEvent;
 
 public class PlayMaxiHiOnJoinCommand extends GuildVoiceAudioCommand {
 
-    public PlayMaxiHiOnJoinCommand() {
-        super(null);
+    public PlayMaxiHiOnJoinCommand(Bot bot) {
+        super(bot, null);
         audioPlayerManager.registerSourceManager(new LocalAudioSourceManager());
         audioLibrary.loadFile("./data/other/maxi_hi.wav");
     }
 
     @Override
     public boolean isMatching(GenericGuildVoiceEvent event) {
-        if ((event instanceof GuildVoiceJoinEvent) || (event instanceof GuildVoiceMoveEvent)) {
-            Member botGuildMember = event.getGuild().getMember(event.getJDA().getSelfUser());
-            VoiceChannel botChannel = botGuildMember.getVoiceState().getChannel();
-            if (event.getVoiceState().getChannel() == botChannel) {
-                return true;
+        if (!bot.isPlayingAudioInGuild(event.getGuild())) {
+            if ((event instanceof GuildVoiceJoinEvent) || (event instanceof GuildVoiceMoveEvent)) {
+                Member botGuildMember = event.getGuild().getMember(event.getJDA().getSelfUser());
+                VoiceChannel botChannel = botGuildMember.getVoiceState().getChannel();
+                if (event.getVoiceState().getChannel() == botChannel) {
+                    return true;
+                }
             }
         }
         return false;

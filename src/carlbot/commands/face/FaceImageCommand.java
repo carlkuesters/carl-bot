@@ -1,5 +1,6 @@
 package carlbot.commands.face;
 
+import carlbot.Bot;
 import carlbot.Command;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
@@ -12,6 +13,9 @@ import java.net.URL;
 
 public class FaceImageCommand extends Command<MessageReceivedEvent> {
 
+    public FaceImageCommand(Bot bot) {
+        super(bot);
+    }
     private static final String commandPrefix = "!carl ";
     private static final String imagesDirectory = "./images/";
     private static final int maximumMinimumFaces = 20;

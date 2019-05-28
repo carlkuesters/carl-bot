@@ -1,5 +1,6 @@
 package carlbot.commands.other;
 
+import carlbot.Bot;
 import carlbot.commands.audio.AudioUtility;
 import carlbot.commands.audio.GuildMessageAudioCommand;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
@@ -10,8 +11,8 @@ import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 public class MaxiWritesHiCommand extends GuildMessageAudioCommand {
 
-    public MaxiWritesHiCommand() {
-        super(null);
+    public MaxiWritesHiCommand(Bot bot) {
+        super(bot, null);
         audioPlayerManager.registerSourceManager(new LocalAudioSourceManager());
         audioLibrary.loadFile("./data/other/maxi_hi.wav");
     }

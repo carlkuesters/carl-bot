@@ -1,11 +1,15 @@
 package carlbot.commands.other;
 
+import carlbot.Bot;
 import carlbot.Command;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class QuestionCommand extends Command<MessageReceivedEvent> {
 
+    public QuestionCommand(Bot bot) {
+        super(bot);
+    }
     private String[] answers = {
             "Ja.", "Nein.", "Vielleicht.", "Mit absoluter Sicherheit.",
             "Niemals.", "Nie im Leben.", "Manchmal.", "Ich denke schon.",
@@ -18,7 +22,8 @@ public class QuestionCommand extends Command<MessageReceivedEvent> {
             "So sehr wie Yasuo Skill braucht.", "Aber hallo!",
             "Da kann ich mich nicht entscheiden...", "Glasklar.",
             "Deni-.. Definitiv nein.", "Klaro.", "Das trifft eigentlich immer zu.",
-            "Ich denke, das sollte so sein, ja."
+            "Ich denke, das sollte so sein, ja.", "Das weiss ich nicht.",
+            "Ähm... Nein.", "Darüber müsste ich sehr genau nachdenken."
     };
 
     @Override

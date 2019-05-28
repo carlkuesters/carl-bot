@@ -1,13 +1,14 @@
 package carlbot.commands.audio;
 
+import carlbot.Bot;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 public abstract class GuildMessageAudioCommand extends AudioCommand<GuildMessageReceivedEvent> {
 
-    protected GuildMessageAudioCommand(String commandPrefix) {
-        super(commandPrefix);
+    protected GuildMessageAudioCommand(Bot bot, String commandPrefix) {
+        super(bot, commandPrefix);
     }
     private VoiceChannel bestVoiceChannel;
 

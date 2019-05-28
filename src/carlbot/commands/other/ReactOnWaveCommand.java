@@ -1,11 +1,15 @@
 package carlbot.commands.other;
 
+import carlbot.Bot;
 import carlbot.Command;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 public class ReactOnWaveCommand extends Command<GuildMessageReceivedEvent> {
 
+    public ReactOnWaveCommand(Bot bot) {
+        super(bot);
+    }
     private static final String EMOTE_WAVE_RAW = "\uD83D\uDC4B";
 
     private Message receivedMessage;

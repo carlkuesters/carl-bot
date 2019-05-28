@@ -1,5 +1,6 @@
 package carlbot.commands.audio;
 
+import carlbot.Bot;
 import carlbot.Command;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
@@ -10,7 +11,8 @@ import net.dv8tion.jda.core.managers.AudioManager;
 
 public abstract class AudioCommand<T extends GenericGuildEvent> extends Command<T> {
 
-    AudioCommand(String commandPrefix) {
+    AudioCommand(Bot bot, String commandPrefix) {
+        super(bot);
         this.commandPrefix = commandPrefix;
         audioPlayerManager = new DefaultAudioPlayerManager();
         audioLibrary = new AudioLibrary(audioPlayerManager);
@@ -28,7 +30,7 @@ public abstract class AudioCommand<T extends GenericGuildEvent> extends Command<
     public void execute(T event) {
         AudioManager audioManager = event.getGuild().getAudioManager();
         AudioPlayer audioPlayer = audioPlayerManager.createPlayer();
-        audioManager.setSendingHandler(new AudioPlayerSendHandler(audioPlayer));
+        audioManager.setSendingHandler(new BotGuildAudioPlayerSendHandler(audioPlayer, bot, event.getGuild()));
         VoiceChannel myChannel = getVoiceChannelToJoin(event);
         if (myChannel != null) {
             play(event, audioPlayer);

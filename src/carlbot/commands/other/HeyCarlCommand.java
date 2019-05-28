@@ -1,5 +1,6 @@
 package carlbot.commands.other;
 
+import carlbot.Bot;
 import carlbot.Command;
 import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
@@ -8,6 +9,9 @@ import java.util.Optional;
 
 public class HeyCarlCommand extends Command<GuildMessageReceivedEvent> {
 
+    public HeyCarlCommand(Bot bot) {
+        super(bot);
+    }
     private static final int PAUSE_DURATION = 60000;
     private static final String EMOTE_NAME_HEY_CARL_W = "heycarlW";
     private static final String EMOTE_NAME_HEY_CARL_E = "heycarlE";

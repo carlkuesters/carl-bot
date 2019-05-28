@@ -6,6 +6,7 @@ import carlbot.commands.tts.TextToSpeechCommand;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.guild.voice.GenericGuildVoiceEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -13,24 +14,26 @@ import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import javax.security.auth.login.LoginException;
+import java.util.HashMap;
 
 public class Bot extends ListenerAdapter {
 
     private Command[] defaultCommands = {
-        new FaceImageCommand(),
-        new QuestionCommand()
+        new FaceImageCommand(this),
+        new QuestionCommand(this)
     };
     private Command[] guildMessageCommands = {
-            new TextToSpeechCommand(),
-            new SaltCommand(),
-            new PlayCommand(),
-            new MaxiWritesHiCommand(),
-            new HeyCarlCommand(),
-            new ReactOnWaveCommand()
+        new TextToSpeechCommand(this),
+        new SaltCommand(this),
+        new PlayCommand(this),
+        new MaxiWritesHiCommand(this),
+        new HeyCarlCommand(this),
+        new ReactOnWaveCommand(this)
     };
     private Command[] guildVoiceCommands = {
-            new PlayMaxiHiOnJoinCommand()
+        new PlayMaxiHiOnJoinCommand(this)
     };
+    private HashMap<Guild, Boolean> isPlayingAudioInGuilds = new HashMap<>();
 
     void connect() throws LoginException {
         JDA jda = new JDABuilder(AccountType.BOT).setToken("YOUR-SECRET-TOKEN").build();
@@ -82,5 +85,13 @@ public class Bot extends ListenerAdapter {
                 break;
             }
         }
+    }
+
+    public void setPlayingAudioInGuild(Guild guild, boolean isPlayingAudio) {
+        isPlayingAudioInGuilds.put(guild, isPlayingAudio);
+    }
+
+    public boolean isPlayingAudioInGuild(Guild guild) {
+        return isPlayingAudioInGuilds.getOrDefault(guild, false);
     }
 }

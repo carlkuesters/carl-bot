@@ -1,5 +1,6 @@
 package carlbot.commands.other;
 
+import carlbot.Bot;
 import carlbot.commands.audio.GuildMessageAudioCommand;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.source.bandcamp.BandcampAudioSourceManager;
@@ -16,8 +17,8 @@ import java.net.URL;
 
 public class PlayCommand extends GuildMessageAudioCommand {
 
-    public PlayCommand() {
-        super("!play");
+    public PlayCommand(Bot bot) {
+        super(bot, "!play");
         audioPlayerManager.registerSourceManager(new YoutubeAudioSourceManager(true));
         audioPlayerManager.registerSourceManager(new SoundCloudAudioSourceManager());
         audioPlayerManager.registerSourceManager(new BandcampAudioSourceManager());

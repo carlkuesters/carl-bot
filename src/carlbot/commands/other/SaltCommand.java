@@ -1,5 +1,6 @@
 package carlbot.commands.other;
 
+import carlbot.Bot;
 import carlbot.commands.audio.GuildMessageAudioCommand;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.source.local.LocalAudioSourceManager;
@@ -8,8 +9,8 @@ import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 public class SaltCommand extends GuildMessageAudioCommand {
 
-    public SaltCommand() {
-        super("!salt");
+    public SaltCommand(Bot bot) {
+        super(bot, "!salt");
         audioPlayerManager.registerSourceManager(new LocalAudioSourceManager());
         audioLibrary.loadDirectory("./data/salt/");
     }

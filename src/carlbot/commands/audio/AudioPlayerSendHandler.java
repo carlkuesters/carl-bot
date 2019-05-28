@@ -9,7 +9,7 @@ public class AudioPlayerSendHandler implements AudioSendHandler {
     AudioPlayerSendHandler(AudioPlayer audioPlayer) {
         this.audioPlayer = audioPlayer;
     }
-    private final AudioPlayer audioPlayer;
+    private AudioPlayer audioPlayer;
     private AudioFrame lastFrame;
 
     @Override
