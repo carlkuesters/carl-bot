@@ -55,12 +55,13 @@ public class AudioLibrary {
 
             @Override
             public void noMatches() {
-                // Notify the user that we've got nothing
+                // Notify no one that we've got nothing?
             }
 
             @Override
             public void loadFailed(FriendlyException throwable) {
-                // Notify the user that everything exploded
+                // Notify the developer that everything exploded
+                throwable.printStackTrace();
             }
         });
     }
