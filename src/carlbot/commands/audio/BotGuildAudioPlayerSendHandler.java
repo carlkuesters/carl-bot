@@ -2,7 +2,7 @@ package carlbot.commands.audio;
 
 import carlbot.Bot;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
-import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.api.entities.Guild;
 
 public class BotGuildAudioPlayerSendHandler extends AudioPlayerSendHandler {
 

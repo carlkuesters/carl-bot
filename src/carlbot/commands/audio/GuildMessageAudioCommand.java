@@ -2,8 +2,8 @@ package carlbot.commands.audio;
 
 import carlbot.Bot;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
-import net.dv8tion.jda.core.entities.VoiceChannel;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public abstract class GuildMessageAudioCommand extends AudioCommand<GuildMessageReceivedEvent> {
 

@@ -6,8 +6,8 @@ import carlbot.commands.audio.GuildMessageAudioCommand;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.source.local.LocalAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import net.dv8tion.jda.core.entities.VoiceChannel;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class MaxiWritesHiCommand extends GuildMessageAudioCommand {
 

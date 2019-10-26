@@ -2,8 +2,8 @@ package carlbot.commands.other;
 
 import carlbot.Bot;
 import carlbot.Command;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class QuestionCommand extends Command<MessageReceivedEvent> {
 
@@ -23,7 +23,10 @@ public class QuestionCommand extends Command<MessageReceivedEvent> {
             "Da kann ich mich nicht entscheiden...", "Glasklar.",
             "Deni-.. Definitiv nein.", "Klaro.", "Das trifft eigentlich immer zu.",
             "Ich denke, das sollte so sein, ja.", "Das weiss ich nicht.",
-            "Ähm... Nein.", "Darüber müsste ich sehr genau nachdenken."
+            "Ähm... Nein.", "Darüber müsste ich sehr genau nachdenken.",
+            "So sicher wie Lukas neue Freunde hat.", "Vergiss es.",
+            "Das ist unmöglich zu beantworten.", "Wir wissen alle, dass das wahr ist.",
+            "Yesssss.", "Nö.", "Früher nein, mittlerweile ja."
     };
 
     @Override

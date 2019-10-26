@@ -2,8 +2,8 @@ package carlbot.commands.other;
 
 import carlbot.Bot;
 import carlbot.Command;
-import net.dv8tion.jda.core.entities.Emote;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.entities.Emote;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.Optional;
 

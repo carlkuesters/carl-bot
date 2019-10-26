@@ -5,9 +5,9 @@ import carlbot.Command;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
-import net.dv8tion.jda.core.entities.VoiceChannel;
-import net.dv8tion.jda.core.events.guild.GenericGuildEvent;
-import net.dv8tion.jda.core.managers.AudioManager;
+import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.events.guild.GenericGuildEvent;
+import net.dv8tion.jda.api.managers.AudioManager;
 
 public abstract class AudioCommand<T extends GenericGuildEvent> extends Command<T> {
 

@@ -2,7 +2,7 @@ package carlbot.commands.face;
 
 import carlbot.Bot;
 import carlbot.Command;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

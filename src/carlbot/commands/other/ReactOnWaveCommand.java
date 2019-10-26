@@ -2,8 +2,8 @@ package carlbot.commands.other;
 
 import carlbot.Bot;
 import carlbot.Command;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class ReactOnWaveCommand extends Command<GuildMessageReceivedEvent> {
 

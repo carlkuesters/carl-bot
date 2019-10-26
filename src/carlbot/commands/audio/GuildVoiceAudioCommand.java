@@ -1,8 +1,8 @@
 package carlbot.commands.audio;
 
 import carlbot.Bot;
-import net.dv8tion.jda.core.entities.VoiceChannel;
-import net.dv8tion.jda.core.events.guild.voice.GenericGuildVoiceEvent;
+import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.events.guild.voice.GenericGuildVoiceEvent;
 
 public abstract class GuildVoiceAudioCommand extends AudioCommand<GenericGuildVoiceEvent> {
 

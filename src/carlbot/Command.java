@@ -1,6 +1,6 @@
 package carlbot;
 
-import net.dv8tion.jda.core.events.Event;
+import net.dv8tion.jda.api.events.Event;
 
 public abstract class Command<EventType extends Event> {
 
