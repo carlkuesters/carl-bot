@@ -1,8 +1,5 @@
 package carlbot.commands.face;
 
-import com.google.gson.Gson;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.opencv.core.*;
 import org.opencv.objdetect.CascadeClassifier;
 
@@ -14,9 +11,8 @@ import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.Collections;
-import java.util.LinkedList;
+import java.util.List;
 
 public class FaceImageCreator {
 
@@ -25,6 +21,7 @@ public class FaceImageCreator {
         this.randomOrder = randomOrder;
         this.maxWidth = maxWidth;
         this.imagesDirectory = imagesDirectory;
+        imageSearcher = new ImageSearcher_Flickr();
         faceDetector = new CascadeClassifier();
         faceDetector.load("./data/haarcascades/haarcascade_frontalface_default.xml");
     }
@@ -32,15 +29,16 @@ public class FaceImageCreator {
     private boolean randomOrder;
     private int maxWidth;
     private String imagesDirectory;
+    private ImageSearcher imageSearcher;
     private CascadeClassifier faceDetector;
 
     public static void loadNativeLibraries() {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
 
-    BufferedImage createImage(String searchTerm, int minimumFaces, String carlName) throws IOException {
+    BufferedImage createImage(String searchTerm, int minimumFaces, String carlName) throws Exception {
         System.out.println("Creating image for: " + searchTerm);
-        LinkedList<String> imageUrls = getImageUrls(searchTerm);
+        List<String> imageUrls = imageSearcher.getImageUrls(searchTerm, maximumCheckedImages);
         if (randomOrder) {
             Collections.shuffle(imageUrls);
         }
@@ -58,47 +56,10 @@ public class FaceImageCreator {
         return modifyImage(result, carlName);
     }
 
-    private LinkedList<String> getImageUrls(String searchTerm) throws IOException {
-        String googleImagesUrl = "https://www.google.com/search?q=" + URLEncoder.encode(searchTerm, "UTF-8") + "&tbm=isch";
-        String urlDelimiterBefore = "\"ou\":\"";
-        String urlDelimiterAfter = "\",\"";
-        Document document = Jsoup.connect(googleImagesUrl).get();
-        String html = document.outerHtml();
-
-        LinkedList<String> imageUrls = new LinkedList<>();
-        int htmlSearchOffset = 0;
-        while (true) {
-            try {
-                int fullImageUrlStart = html.indexOf(urlDelimiterBefore, htmlSearchOffset);
-                if (fullImageUrlStart == -1) {
-                    break;
-                }
-                fullImageUrlStart += urlDelimiterBefore.length();
-                int fullImageUrlEnd = html.indexOf(urlDelimiterAfter, fullImageUrlStart);
-                if (fullImageUrlEnd == -1) {
-                    break;
-                }
-                htmlSearchOffset = fullImageUrlEnd;
-                String encodedFullImageUrl = html.substring(fullImageUrlStart, fullImageUrlEnd);
-                Gson gson = new Gson();
-                String fullImageUrl = gson.fromJson("\"" + encodedFullImageUrl + "\"", String.class);
-                fullImageUrl = fullImageUrl.replace("\\u003d", "=");
-                imageUrls.add(fullImageUrl);
-                if (imageUrls.size() >= maximumCheckedImages) {
-                    break;
-                }
-            } catch (Exception ex) {
-                System.out.println("Error occured while parsing image url: " + ex.getMessage());
-                ex.printStackTrace();
-            }
-        }
-        return imageUrls;
-    }
-
-    private FaceImageResult findResult(LinkedList<String> imageUrls, int minimumFaces) {
+    private FaceImageResult findResult(List<String> imageUrls, int minimumFaces) {
         while (imageUrls.size() > 0) {
             try {
-                String fullImageUrl = imageUrls.removeFirst();
+                String fullImageUrl = imageUrls.remove(0);
                 BufferedImage image = ImageIO.read(new URL(fullImageUrl));
                 FaceImageResult result = calculateResult(image);
                 if (result.getFaceDetections().length >= minimumFaces) {

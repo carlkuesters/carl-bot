@@ -102,7 +102,7 @@ public class FaceImageCommand extends Command<MessageReceivedEvent> {
                 sendImage(image, event);
                 wasImageSent = true;
             }
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         if (!wasImageSent) {
@@ -110,7 +110,7 @@ public class FaceImageCommand extends Command<MessageReceivedEvent> {
         }
     }
 
-    private BufferedImage createImage() throws IOException {
+    private BufferedImage createImage() throws Exception {
         if (imageUrl != null) {
             return faceImageCreator.createImage(imageUrl, carlName);
         } else {
