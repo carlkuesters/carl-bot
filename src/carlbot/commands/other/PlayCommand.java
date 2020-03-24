@@ -24,7 +24,7 @@ public class PlayCommand extends GuildMessageAudioCommand {
     public PlayCommand(Bot bot) {
         super(bot, "!play");
         audioPlayerManager.registerSourceManager(new YoutubeAudioSourceManager(true));
-        audioPlayerManager.registerSourceManager(new SoundCloudAudioSourceManager());
+        audioPlayerManager.registerSourceManager(SoundCloudAudioSourceManager.createDefault());
         audioPlayerManager.registerSourceManager(new BandcampAudioSourceManager());
         audioPlayerManager.registerSourceManager(new VimeoAudioSourceManager());
         audioPlayerManager.registerSourceManager(new TwitchStreamAudioSourceManager());
