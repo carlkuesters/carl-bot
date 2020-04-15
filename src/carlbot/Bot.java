@@ -41,8 +41,10 @@ public class Bot extends ListenerAdapter {
             new MaxiWritesHiCommand(this),
             new HeyCarlCommand(this),
             new ReactOnWaveCommand(this),
+            new EchoCommand(this),
             new CommandSaveCommand(this),
-            new CommandExecuteCommand(this)
+            // Has to be last since it will match every message starting with !
+            new CommandExecuteCommand(this),
         };
         guildVoiceCommands = new Command[] {
             new PlayMaxiHiOnJoinCommand(this)
