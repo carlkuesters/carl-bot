@@ -13,8 +13,8 @@ public abstract class GuildMessageAudioCommand extends AudioCommand<GuildMessage
     private VoiceChannel bestVoiceChannel;
 
     @Override
-    public boolean isMatching(GuildMessageReceivedEvent event) {
-        if (event.getMessage().getContentRaw().startsWith(commandPrefix)) {
+    public boolean isMatching(GuildMessageReceivedEvent event, String content) {
+        if (content.startsWith(commandPrefix)) {
             bestVoiceChannel = findBestVoiceChannel(event);
             if (bestVoiceChannel != null) {
                 return true;

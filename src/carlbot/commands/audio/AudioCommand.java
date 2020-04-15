@@ -22,7 +22,7 @@ public abstract class AudioCommand<T extends GenericGuildEvent> extends Command<
     protected AudioLibrary audioLibrary;
 
     @Override
-    public void parse(GenericGuildEvent event) {
+    public void parse(GenericGuildEvent event, String content) {
 
     }
 

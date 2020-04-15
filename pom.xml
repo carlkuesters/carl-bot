@@ -24,6 +24,7 @@
         <version.jda>4.1.1_123</version.jda>
         <version.jsoup>1.13.1</version.jsoup>
         <version.lavaplayer>1.3.38</version.lavaplayer>
+        <version.mysql-connector>8.0.19</version.mysql-connector>
         <version.slf4j>1.7.30</version.slf4j>
     </properties>
     <repositories>
@@ -52,6 +53,11 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>${version.slf4j}</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${version.mysql-connector}</version>
         </dependency>
         <dependency>
             <groupId>org.jsoup</groupId>

@@ -20,8 +20,8 @@ public class TextToSpeechCommand extends GuildMessageAudioCommand {
     private String text;
 
     @Override
-    public void parse(GuildMessageReceivedEvent event) {
-        text = event.getMessage().getContentRaw().substring(commandPrefix.length());
+    public void parse(GuildMessageReceivedEvent event, String content) {
+        text = content.substring(commandPrefix.length());
     }
 
     @Override

@@ -15,8 +15,8 @@ public class ReactOnWaveCommand extends Command<GuildMessageReceivedEvent> {
     private Message receivedMessage;
 
     @Override
-    public boolean isMatching(GuildMessageReceivedEvent event) {
-        if (EMOTE_WAVE_RAW.equals(event.getMessage().getContentRaw())) {
+    public boolean isMatching(GuildMessageReceivedEvent event, String content) {
+        if (EMOTE_WAVE_RAW.equals(content)) {
             receivedMessage = event.getMessage();
             return true;
         }
@@ -24,7 +24,7 @@ public class ReactOnWaveCommand extends Command<GuildMessageReceivedEvent> {
     }
 
     @Override
-    public void parse(GuildMessageReceivedEvent event) {
+    public void parse(GuildMessageReceivedEvent event, String content) {
 
     }
 

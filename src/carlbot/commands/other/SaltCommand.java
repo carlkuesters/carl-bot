@@ -17,8 +17,8 @@ public class SaltCommand extends GuildMessageAudioCommand {
     private String name;
 
     @Override
-    public void parse(GuildMessageReceivedEvent event) {
-        name = event.getMessage().getContentRaw().substring(commandPrefix.length()).trim();
+    public void parse(GuildMessageReceivedEvent event, String content) {
+        name = content.substring(commandPrefix.length()).trim();
     }
 
     @Override

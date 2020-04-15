@@ -36,8 +36,8 @@ public class PlayCommand extends GuildMessageAudioCommand {
     private Long endPosition;
 
     @Override
-    public void parse(GuildMessageReceivedEvent event) {
-        audioIdentifier = event.getMessage().getContentRaw().substring(commandPrefix.length()).trim();
+    public void parse(GuildMessageReceivedEvent event, String content) {
+        audioIdentifier = content.substring(commandPrefix.length()).trim();
         parseTimeRange();
         if (!isURL(audioIdentifier)) {
             audioIdentifier = "ytsearch:" + audioIdentifier;

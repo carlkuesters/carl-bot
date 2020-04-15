@@ -18,10 +18,10 @@ public class MaxiWritesHiCommand extends GuildMessageAudioCommand {
     }
 
     @Override
-    public boolean isMatching(GuildMessageReceivedEvent event) {
+    public boolean isMatching(GuildMessageReceivedEvent event, String content) {
         if (event.getAuthor().getName().equals("GameUser21")) {
-            String messageLowerCase = event.getMessage().getContentRaw().toLowerCase();
-            if (messageLowerCase.equals("hi") || (messageLowerCase.startsWith("hi") && messageLowerCase.contains("^^"))) {
+            String contentLowerCase = content.toLowerCase();
+            if (contentLowerCase.equals("hi") || (contentLowerCase.startsWith("hi") && contentLowerCase.contains("^^"))) {
                 return true;
             }
         }

@@ -3,60 +3,75 @@ package carlbot;
 import carlbot.commands.face.FaceImageCommand;
 import carlbot.commands.other.*;
 import carlbot.commands.tts.TextToSpeechCommand;
+import carlbot.database.Database;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.events.guild.voice.GenericGuildVoiceEvent;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.security.auth.login.LoginException;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 public class Bot extends ListenerAdapter {
 
-    private Command[] defaultCommands = {
-        new FaceImageCommand(this),
-        new QuestionCommand(this)
-    };
-    private Command[] guildMessageCommands = {
-        new TextToSpeechCommand(this),
-        new SaltCommand(this),
-        new PlayCommand(this),
-        new MaxiWritesHiCommand(this),
-        new HeyCarlCommand(this),
-        new ReactOnWaveCommand(this)
-    };
-    private Command[] guildVoiceCommands = {
-        new PlayMaxiHiOnJoinCommand(this)
-    };
+    private Database database;
+    private Command[] guildMessageCommands;
+    private Command[] guildVoiceCommands;
     private HashMap<Guild, Boolean> isPlayingAudioInGuilds = new HashMap<>();
 
-    void connect() throws LoginException {
+    void connect() throws SQLException, LoginException {
+        database = new Database("mysql", "YOUR-DB-PATH", "YOUR-DB-USER", "YOUR-DB-PASSWORD");
+        initializeCommands();
         JDA jda = new JDABuilder(AccountType.BOT).setToken("YOUR-SECRET-TOKEN").build();
         jda.addEventListener(this);
     }
 
-    @Override
-    public void onMessageReceived(MessageReceivedEvent event) {
-        if (event.getAuthor() != event.getJDA().getSelfUser()) {
-            try {
-                handleEventCommands(event, defaultCommands);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                event.getChannel().sendMessage("Da ging was richtig schief...").queue();
-            }
-        }
+    private void initializeCommands() {
+        guildMessageCommands = new Command[] {
+            new FaceImageCommand(this),
+            new QuestionCommand(this),
+            new TextToSpeechCommand(this),
+            new SaltCommand(this),
+            new PlayCommand(this),
+            new MaxiWritesHiCommand(this),
+            new HeyCarlCommand(this),
+            new ReactOnWaveCommand(this),
+            new CommandSaveCommand(this),
+            new CommandExecuteCommand(this)
+        };
+        guildVoiceCommands = new Command[] {
+            new PlayMaxiHiOnJoinCommand(this)
+        };
     }
 
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
+        handleGuildMessageReceivedEvent(event, null);
+    }
+
+    @Override
+    public void onGenericGuildVoice(GenericGuildVoiceEvent event) {
+        handleGenericGuildVoiceEvent(event);
+    }
+
+    public void handleEvent(Event event, String forcedContent) {
+        if (event instanceof GuildMessageReceivedEvent) {
+            handleGuildMessageReceivedEvent((GuildMessageReceivedEvent) event, forcedContent);
+        } else if (event instanceof GenericGuildVoiceEvent) {
+            handleGenericGuildVoiceEvent((GenericGuildVoiceEvent) event);
+        }
+    }
+
+    private void handleGuildMessageReceivedEvent(GuildMessageReceivedEvent event, String forcedContent) {
         if (event.getAuthor() != event.getJDA().getSelfUser()) {
+            String content = ((forcedContent != null) ? forcedContent : event.getMessage().getContentRaw());
             try {
-                handleEventCommands(event, guildMessageCommands);
+                handleEventCommands(guildMessageCommands, event, content);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 event.getChannel().sendMessage("Da ging was richtig schief...").queue();
@@ -64,27 +79,30 @@ public class Bot extends ListenerAdapter {
         }
     }
 
-    @Override
-    public void onGenericGuildVoice(GenericGuildVoiceEvent event) {
+    private void handleGenericGuildVoiceEvent(GenericGuildVoiceEvent event) {
         boolean isHuman = (!event.getMember().getUser().isBot());
         boolean isSelf = (event.getMember().getUser() == event.getJDA().getSelfUser());
         if (isHuman || isSelf) {
             try {
-                handleEventCommands(event, guildVoiceCommands);
+                handleEventCommands(guildVoiceCommands, event, null);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
     }
 
-    private void handleEventCommands(Event event, Command[] commands) {
+    private void handleEventCommands(Command[] commands, Event event, String content) {
         for (Command command : commands) {
-            if (command.isMatching(event)) {
-                command.parse(event);
+            if (command.isMatching(event, content)) {
+                command.parse(event, content);
                 command.execute(event);
                 break;
             }
         }
+    }
+
+    public Database getDatabase() {
+        return database;
     }
 
     public void setPlayingAudioInGuild(Guild guild, boolean isPlayingAudio) {

@@ -20,7 +20,7 @@ public class PlayMaxiHiOnJoinCommand extends GuildVoiceAudioCommand {
     }
 
     @Override
-    public boolean isMatching(GenericGuildVoiceEvent event) {
+    public boolean isMatching(GenericGuildVoiceEvent event, String content) {
         if (!bot.isPlayingAudioInGuild(event.getGuild())) {
             if ((event instanceof GuildVoiceJoinEvent) || (event instanceof GuildVoiceMoveEvent)) {
                 Member botGuildMember = event.getGuild().getMember(event.getJDA().getSelfUser());

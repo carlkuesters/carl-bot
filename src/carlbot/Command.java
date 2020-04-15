@@ -9,9 +9,9 @@ public abstract class Command<EventType extends Event> {
     }
     protected Bot bot;
 
-    public abstract boolean isMatching(EventType event);
+    public abstract boolean isMatching(EventType event, String content);
 
-    public abstract void parse(EventType event);
+    public abstract void parse(EventType event, String content);
 
     public abstract void execute(EventType event);
 }

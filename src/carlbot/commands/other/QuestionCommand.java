@@ -2,10 +2,9 @@ package carlbot.commands.other;
 
 import carlbot.Bot;
 import carlbot.Command;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
-public class QuestionCommand extends Command<MessageReceivedEvent> {
+public class QuestionCommand extends Command<GuildMessageReceivedEvent> {
 
     public QuestionCommand(Bot bot) {
         super(bot);
@@ -26,22 +25,24 @@ public class QuestionCommand extends Command<MessageReceivedEvent> {
             "Ähm... Nein.", "Darüber müsste ich sehr genau nachdenken.",
             "So sicher wie Lukas neue Freunde hat.", "Vergiss es.",
             "Das ist unmöglich zu beantworten.", "Wir wissen alle, dass das wahr ist.",
-            "Yesssss.", "Nö.", "Früher nein, mittlerweile ja."
+            "Yesssss.", "Nö.", "Früher nein, mittlerweile ja.",
+            "So sehr wie Fabi sich einen reinluckt.", "So sehr wie Carl Glück in TFT hatte.",
+            "Ist Wasser nass?", "Verrat ich nicht.", "Ooooh ja!",
+            "So sehr wie meine Bildersuche funktioniert."
     };
 
     @Override
-    public boolean isMatching(MessageReceivedEvent event) {
-        Message message = event.getMessage();
-        return message.isMentioned(event.getJDA().getSelfUser()) && message.getContentRaw().endsWith("?");
+    public boolean isMatching(GuildMessageReceivedEvent event, String content) {
+        return event.getMessage().isMentioned(event.getJDA().getSelfUser()) && content.endsWith("?");
     }
 
     @Override
-    public void parse(MessageReceivedEvent event) {
+    public void parse(GuildMessageReceivedEvent event, String content) {
 
     }
 
     @Override
-    public void execute(MessageReceivedEvent event) {
+    public void execute(GuildMessageReceivedEvent event) {
         String answer = answers[(int) (Math.random() * answers.length)];
         event.getChannel().sendMessage(answer).queue();
     }

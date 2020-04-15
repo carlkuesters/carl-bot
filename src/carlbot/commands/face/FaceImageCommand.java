@@ -2,7 +2,7 @@ package carlbot.commands.face;
 
 import carlbot.Bot;
 import carlbot.Command;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class FaceImageCommand extends Command<MessageReceivedEvent> {
+public class FaceImageCommand extends Command<GuildMessageReceivedEvent> {
 
     public FaceImageCommand(Bot bot) {
         super(bot);
@@ -21,7 +21,6 @@ public class FaceImageCommand extends Command<MessageReceivedEvent> {
     private static final int maximumMinimumFaces = 20;
     private FaceImageCreator faceImageCreator = new FaceImageCreator(50, true, 800, imagesDirectory);
 
-    private String message;
     private String[] commandParts;
     private int parameterParseIndex;
     private URL imageUrl;
@@ -30,14 +29,13 @@ public class FaceImageCommand extends Command<MessageReceivedEvent> {
     private String searchTerm;
 
     @Override
-    public boolean isMatching(MessageReceivedEvent event) {
-        message = event.getMessage().getContentRaw();
-        return message.startsWith(commandPrefix);
+    public boolean isMatching(GuildMessageReceivedEvent event, String content) {
+        return content.startsWith(commandPrefix);
     }
 
     @Override
-    public void parse(MessageReceivedEvent event) {
-        commandParts = message.substring(commandPrefix.length()).split(" ");
+    public void parse(GuildMessageReceivedEvent event, String content) {
+        commandParts = content.substring(commandPrefix.length()).split(" ");
         parameterParseIndex = 0;
         parseCarlName();
         parseImageUrl();
@@ -68,7 +66,7 @@ public class FaceImageCommand extends Command<MessageReceivedEvent> {
         }
     }
 
-    private void parseMinimumFaces(MessageReceivedEvent event) {
+    private void parseMinimumFaces(GuildMessageReceivedEvent event) {
         minimumFaces = 1;
         if (parameterParseIndex < commandParts.length) {
             try {
@@ -94,12 +92,12 @@ public class FaceImageCommand extends Command<MessageReceivedEvent> {
     }
 
     @Override
-    public void execute(MessageReceivedEvent event) {
+    public void execute(GuildMessageReceivedEvent event) {
         boolean wasImageSent = false;
         try {
             BufferedImage image = createImage();
             if (image != null) {
-                sendImage(image, event);
+                sendImage(event, image);
                 wasImageSent = true;
             }
         } catch (Exception ex) {
@@ -118,7 +116,7 @@ public class FaceImageCommand extends Command<MessageReceivedEvent> {
         }
     }
 
-    private void sendImage(BufferedImage image, MessageReceivedEvent event) throws IOException {
+    private void sendImage(GuildMessageReceivedEvent event, BufferedImage image) throws IOException {
         // TODO: Send embedded image instead of saving+deleting file
         File outputFile = new File(imagesDirectory + "output/" + System.currentTimeMillis() + ".png");
         ImageIO.write(image, "png", outputFile);

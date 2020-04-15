@@ -23,7 +23,7 @@ public class HeyCarlCommand extends Command<GuildMessageReceivedEvent> {
     private String responseMessage;
 
     @Override
-    public boolean isMatching(GuildMessageReceivedEvent event) {
+    public boolean isMatching(GuildMessageReceivedEvent event, String content) {
         if ((System.currentTimeMillis() - lastResponseTimestamp) > PAUSE_DURATION) {
             Optional<Emote> heyCarlEmote = event.getMessage().getEmotes().stream()
                     .filter(emote -> EMOTE_NAME_HEY_CARL_W.equals(emote.getName()) || EMOTE_NAME_HEY_CARL_E.equals(emote.getName()))
@@ -37,7 +37,7 @@ public class HeyCarlCommand extends Command<GuildMessageReceivedEvent> {
     }
 
     @Override
-    public void parse(GuildMessageReceivedEvent event) {
+    public void parse(GuildMessageReceivedEvent event, String content) {
         responseMessage = (EMOTE_NAME_HEY_CARL_W.equals(receivedEmoteName) ? EMOTE_MENTION_HEY_CARL_E : EMOTE_MENTION_HEY_CARL_W);
     }
 
