@@ -26,7 +26,8 @@ public class ImageSearcher_Flickr implements ImageSearcher {
         params.setMedia("photos"); // One of "photos", "videos" or "all"
         params.setExtras(Stream.of("media").collect(Collectors.toSet()));
         params.setText(searchTerm);
-        PhotoList<Photo> results = photos.search(params, 5, 0);
+        params.setSort(SearchParameters.RELEVANCE);
+        PhotoList<Photo> results = photos.search(params, maximumCheckedImages, 0);
         return results.stream()
                 .map(Photo::getMediumUrl)
                 .collect(Collectors.toList());

@@ -26,7 +26,7 @@ public class QuestionCommand extends Command<GuildMessageReceivedEvent> {
             "So sicher wie Lukas neue Freunde hat.", "Vergiss es.",
             "Das ist unmöglich zu beantworten.", "Wir wissen alle, dass das wahr ist.",
             "Yesssss.", "Nö.", "Früher nein, mittlerweile ja.",
-            "So sehr wie Fabi sich einen reinluckt.", "So sehr wie Carl Glück in TFT hatte.",
+            "So sehr wie Fabi sich einen reinluckt.", "So sehr wie Carl Glück in TFT hat.",
             "Ist Wasser nass?", "Verrat ich nicht.", "Ooooh ja!",
             "So sehr wie meine Bildersuche funktioniert."
     };
