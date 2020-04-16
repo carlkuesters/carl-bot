@@ -42,6 +42,7 @@ public class Bot extends ListenerAdapter {
             new HeyCarlCommand(this),
             new ReactOnWaveCommand(this),
             new EchoCommand(this),
+            new ChooseCommand(this),
             new CommandSaveCommand(this),
             // Has to be last since it will match every message starting with !
             new CommandExecuteCommand(this),
