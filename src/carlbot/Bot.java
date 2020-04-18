@@ -26,6 +26,7 @@ public class Bot extends ListenerAdapter {
 
     void connect() throws SQLException, LoginException {
         database = new Database("mysql", "YOUR-DB-PATH", "YOUR-DB-USER", "YOUR-DB-PASSWORD");
+        database.connect();
         initializeCommands();
         JDA jda = new JDABuilder(AccountType.BOT).setToken("YOUR-SECRET-TOKEN").build();
         jda.addEventListener(this);
