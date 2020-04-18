@@ -17,7 +17,7 @@ public class Database{
     private Connection connection;
 
     private void reconnectIfClosed() throws SQLException {
-        if (!connection.isClosed()) {
+        if (connection.isClosed()) {
             System.out.println("Connection closed, trying to reconnect.");
             connect();
         }
