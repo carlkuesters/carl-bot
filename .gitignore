@@ -62,3 +62,6 @@ nbactions.xml
 # IntelliJ specific #
 .idea
 *.iml
+
+# CarlBot specific #
+tmp/

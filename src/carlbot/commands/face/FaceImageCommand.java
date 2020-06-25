@@ -2,6 +2,7 @@ package carlbot.commands.face;
 
 import carlbot.Bot;
 import carlbot.Command;
+import carlbot.TmpFiles;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import javax.imageio.ImageIO;
@@ -118,15 +119,8 @@ public class FaceImageCommand extends Command<GuildMessageReceivedEvent> {
 
     private void sendImage(GuildMessageReceivedEvent event, BufferedImage image) throws IOException {
         // TODO: Send embedded image instead of saving+deleting file
-        File outputFile = new File(imagesDirectory + "output/" + System.currentTimeMillis() + ".png");
-        ImageIO.write(image, "png", outputFile);
-        event.getChannel().sendFile(outputFile).queue();
-        new Thread(() -> {
-            try {
-                Thread.sleep(20000);
-            } catch (InterruptedException ex) {
-            }
-            outputFile.delete();
-        }).start();
+        File tmpFile = TmpFiles.create();
+        ImageIO.write(image, "png", tmpFile);
+        event.getChannel().sendFile(tmpFile).queue();
     }
 }

@@ -4,27 +4,15 @@
     <groupId>com.carlkuesters.carlbot</groupId>
     <artifactId>carl-bot</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.commons-codec>1.14</version.commons-codec>
-        <version.flickr4java>3.0.2</version.flickr4java>
+        <version.flickr4java>3.0.4</version.flickr4java>
         <version.gson>2.8.6</version.gson>
-        <version.jda>4.1.1_123</version.jda>
+        <version.jda>4.1.1_165</version.jda>
         <version.jsoup>1.13.1</version.jsoup>
-        <version.lavaplayer>1.3.38</version.lavaplayer>
-        <version.mysql-connector>8.0.19</version.mysql-connector>
+        <version.lavaplayer>1.3.47</version.lavaplayer>
+        <version.mysql-connector>8.0.20</version.mysql-connector>
         <version.slf4j>1.7.30</version.slf4j>
     </properties>
     <repositories>
@@ -87,4 +75,40 @@
             <systemPath>${project.basedir}/lib/opencv-410.jar</systemPath>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>carlbot.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
