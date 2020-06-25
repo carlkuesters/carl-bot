@@ -13,6 +13,7 @@ public class TmpFiles {
             try {
                 Thread.sleep(20000);
             } catch (InterruptedException ex) {
+                ex.printStackTrace();
             }
             tmpFile.delete();
         }).start();
