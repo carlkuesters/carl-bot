@@ -18,7 +18,7 @@ public class FaceImageCommand extends Command<GuildMessageReceivedEvent> {
         super(bot);
     }
     private static final String commandPrefix = "!carl ";
-    private static final String imagesDirectory = "./images/";
+    private static final String imagesDirectory = "./data/images/";
     private static final int maximumMinimumFaces = 20;
     private FaceImageCreator faceImageCreator = new FaceImageCreator(50, true, 800, imagesDirectory);
 
@@ -119,7 +119,7 @@ public class FaceImageCommand extends Command<GuildMessageReceivedEvent> {
 
     private void sendImage(GuildMessageReceivedEvent event, BufferedImage image) throws IOException {
         // TODO: Send embedded image instead of saving+deleting file
-        File tmpFile = TmpFiles.create();
+        File tmpFile = TmpFiles.create("png");
         ImageIO.write(image, "png", tmpFile);
         event.getChannel().sendFile(tmpFile).queue();
     }

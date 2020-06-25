@@ -1,5 +1,6 @@
 package carlbot.commands.face;
 
+import nu.pattern.OpenCV;
 import org.opencv.core.*;
 import org.opencv.objdetect.CascadeClassifier;
 
@@ -32,8 +33,8 @@ public class FaceImageCreator {
     private ImageSearcher imageSearcher;
     private CascadeClassifier faceDetector;
 
-    public static void loadNativeLibraries() {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+    public static void loadLibraries() {
+        OpenCV.loadShared();
     }
 
     BufferedImage createImage(String searchTerm, int minimumFaces, String carlName) throws Exception {
