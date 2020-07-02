@@ -2,7 +2,6 @@ package carlbot.commands.audio;
 
 import carlbot.Bot;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
-import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -28,16 +27,9 @@ public abstract class GuildMessageAudioCommand extends AudioCommand<GuildMessage
     }
 
     private VoiceChannel findBestVoiceChannel(GuildMessageReceivedEvent event) {
-        VoiceChannel userVoiceChannel = getUserVoiceChannel(event.getMember());
+        Member member = event.getMember();
+        VoiceChannel userVoiceChannel = ((member != null) ? member.getVoiceState().getChannel() : null);
         return ((userVoiceChannel != null) ? userVoiceChannel : AudioUtility.getCurrentOrBestVoiceChannel(event.getGuild()));
-    }
-
-    private VoiceChannel getUserVoiceChannel(Member member) {
-        GuildVoiceState guildVoiceState = member.getVoiceState();
-        if (guildVoiceState != null) {
-            return guildVoiceState.getChannel();
-        }
-        return null;
     }
 
     @Override
