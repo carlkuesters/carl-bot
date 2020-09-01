@@ -25,7 +25,7 @@ public class Database{
 
     public void connect() throws SQLException {
         System.out.println("Connecting to database...");
-        connection = DriverManager.getConnection("jdbc:" + subProtocolName + ":" + path, user, password);
+        connection = DriverManager.getConnection("jdbc:" + subProtocolName + ":" + path + "?serverTimezone=UTC", user, password);
         System.out.println("Connected to database.");
     }
 
