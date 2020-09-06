@@ -25,10 +25,12 @@ public class Bot extends ListenerAdapter {
     private HashMap<Guild, Boolean> isPlayingAudioInGuilds = new HashMap<>();
 
     void connect() throws SQLException, LoginException {
-        database = new Database("mysql", "YOUR-DB-PATH", "YOUR-DB-USER", "YOUR-DB-PASSWORD");
+        String[] databaseSecrets = FileManager.getFileLines("./database.ini");
+        database = new Database("mysql", "//localhost/" + databaseSecrets[2], databaseSecrets[0], databaseSecrets[1]);
         database.connect();
         initializeCommands();
-        JDA jda = new JDABuilder(AccountType.BOT).setToken("YOUR-SECRET-TOKEN").build();
+        String discordBotToken = FileManager.getFileContent("./discord.ini");
+        JDA jda = new JDABuilder(AccountType.BOT).setToken(discordBotToken).build();
         jda.addEventListener(this);
     }
 

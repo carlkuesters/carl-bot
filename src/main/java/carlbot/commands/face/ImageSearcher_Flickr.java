@@ -1,5 +1,6 @@
 package carlbot.commands.face;
 
+import carlbot.FileManager;
 import com.flickr4java.flickr.Flickr;
 import com.flickr4java.flickr.FlickrException;
 import com.flickr4java.flickr.REST;
@@ -15,7 +16,8 @@ import java.util.stream.Stream;
 public class ImageSearcher_Flickr implements ImageSearcher {
 
     ImageSearcher_Flickr() {
-        flickr = new Flickr("YOUR-KEY", "YOUR-SECRET-KEY", new REST());
+        String[] flickrSecrets = FileManager.getFileLines("./flickr.ini");
+        flickr = new Flickr(flickrSecrets[0], flickrSecrets[1], new REST());
     }
     private Flickr flickr;
 
