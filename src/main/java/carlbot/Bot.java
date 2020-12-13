@@ -4,7 +4,6 @@ import carlbot.commands.face.FaceImageCommand;
 import carlbot.commands.other.*;
 import carlbot.commands.tts.TextToSpeechCommand;
 import carlbot.database.Database;
-import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -30,7 +29,7 @@ public class Bot extends ListenerAdapter {
         database.connect();
         initializeCommands();
         String discordBotToken = FileManager.getFileContent("./discord.ini");
-        JDA jda = new JDABuilder(AccountType.BOT).setToken(discordBotToken).build();
+        JDA jda = JDABuilder.createDefault(discordBotToken).build();
         jda.addEventListener(this);
     }
 
