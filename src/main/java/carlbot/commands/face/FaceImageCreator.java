@@ -22,7 +22,7 @@ public class FaceImageCreator {
         this.randomOrder = randomOrder;
         this.maxWidth = maxWidth;
         this.imagesDirectory = imagesDirectory;
-        imageSearcher = new ImageSearcher_Flickr();
+        imageSearcher = new ImageSearcher_Bing();
         faceDetector = new CascadeClassifier();
         faceDetector.load("./data/haarcascades/haarcascade_frontalface_default.xml");
     }
@@ -62,9 +62,12 @@ public class FaceImageCreator {
             try {
                 String fullImageUrl = imageUrls.remove(0);
                 BufferedImage image = ImageIO.read(new URL(fullImageUrl));
-                FaceImageResult result = calculateResult(image);
-                if (result.getFaceDetections().length >= minimumFaces) {
-                    return result;
+                // The image could no longer be existing or we don't have the permissions for it
+                if (image != null) {
+                    FaceImageResult result = calculateResult(image);
+                    if (result.getFaceDetections().length >= minimumFaces) {
+                        return result;
+                    }
                 }
             } catch (Exception ex) {
                 System.out.println("Error occured while loading image: " + ex.getMessage());
