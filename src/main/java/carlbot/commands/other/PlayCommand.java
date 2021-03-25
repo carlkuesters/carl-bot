@@ -1,6 +1,7 @@
 package carlbot.commands.other;
 
 import carlbot.Bot;
+import carlbot.FileManager;
 import carlbot.commands.audio.GuildMessageAudioCommand;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.source.bandcamp.BandcampAudioSourceManager;
@@ -11,8 +12,18 @@ import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.track.TrackMarker;
 import com.sedmelluq.discord.lavaplayer.track.TrackMarkerHandler;
+import com.wrapper.spotify.SpotifyApi;
+import com.wrapper.spotify.exceptions.SpotifyWebApiException;
+import com.wrapper.spotify.model_objects.IPlaylistItem;
+import com.wrapper.spotify.model_objects.credentials.ClientCredentials;
+import com.wrapper.spotify.model_objects.specification.ArtistSimplified;
+import com.wrapper.spotify.model_objects.specification.Playlist;
+import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
+import com.wrapper.spotify.model_objects.specification.Track;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.apache.hc.core5.http.ParseException;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -29,8 +40,15 @@ public class PlayCommand extends GuildMessageAudioCommand {
         audioPlayerManager.registerSourceManager(new VimeoAudioSourceManager());
         audioPlayerManager.registerSourceManager(new TwitchStreamAudioSourceManager());
         audioPlayerManager.registerSourceManager(new HttpAudioSourceManager());
+
+        String[] spotifySecrets = FileManager.getFileLines("./spotify.ini");
+        spotifyApi = new SpotifyApi.Builder()
+                .setClientId(spotifySecrets[0])
+                .setClientSecret(spotifySecrets[1])
+                .build();
     }
     private Pattern TIME_RANGE_PATTERN = Pattern.compile("^(.+) #((\\d+):)?(\\d+)(-((\\d+):)?(\\d+))?$");
+    private SpotifyApi spotifyApi;
     private String audioIdentifier;
     private Long startPosition;
     private Long endPosition;
@@ -40,7 +58,30 @@ public class PlayCommand extends GuildMessageAudioCommand {
         audioIdentifier = content.substring(commandPrefix.length()).trim();
         parseTimeRange();
         if (!isURL(audioIdentifier)) {
+            String spotifyTrackIdentifier = getRandomSpotifyPlaylistTrack(audioIdentifier);
+            if (spotifyTrackIdentifier != null) {
+                audioIdentifier = spotifyTrackIdentifier;
+            }
             audioIdentifier = "ytsearch:" + audioIdentifier;
+        }
+    }
+
+    private String getRandomSpotifyPlaylistTrack(String audioIdentifier) {
+        try {
+            ClientCredentials clientCredentials = spotifyApi.clientCredentials().build().execute();
+            spotifyApi.setAccessToken(clientCredentials.getAccessToken());
+            Playlist playlist = spotifyApi.getPlaylist(audioIdentifier).build().execute();
+            PlaylistTrack[] playlistItems = playlist.getTracks().getItems();
+            IPlaylistItem playlistItem = playlistItems[(int) (Math.random() * playlistItems.length)].getTrack();
+            Track track = spotifyApi.getTrack(playlistItem.getId()).build().execute();
+            String trackIdentifier = "";
+            for (ArtistSimplified artist : track.getArtists()) {
+                trackIdentifier += artist.getName() + " ";
+            }
+            trackIdentifier += track.getName();
+            return trackIdentifier;
+        } catch (IOException | SpotifyWebApiException | ParseException ex) {
+            return null;
         }
     }
 
