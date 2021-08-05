@@ -2,6 +2,7 @@ package carlbot.commands.other;
 
 import carlbot.Bot;
 import carlbot.Command;
+import carlbot.Emojis;
 import carlbot.database.Database;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
@@ -33,7 +34,7 @@ public class CommandSaveCommand extends Command<GuildMessageReceivedEvent> {
     public void execute(GuildMessageReceivedEvent event) {
         String message;
         if (commandContent.startsWith(commandPrefix)) {
-            message = "Kappa";
+            message = Emojis.KAPPA;
         } else {
             long guildId = event.getGuild().getIdLong();
             String creator = event.getAuthor().getName();

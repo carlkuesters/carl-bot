@@ -1,5 +1,6 @@
 package carlbot.database;
 
+import java.math.BigDecimal;
 import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,6 +36,15 @@ public class QueryResult {
     public Long nextLong_Close() {
         if (next()) {
             long value = getLong(1);
+            close();
+            return value;
+        }
+        return null;
+    }
+
+    public BigDecimal nextBigDecimal_Close() {
+        if (next()) {
+            BigDecimal value = getBigDecimal(1);
             close();
             return value;
         }
@@ -119,6 +129,28 @@ public class QueryResult {
         long value = 0;
         try {
             value = resultSet.getLong(columnName);
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+        return value;
+    }
+
+    // Long
+
+    public BigDecimal getBigDecimal(int columnIndex) {
+        BigDecimal value = null;
+        try {
+            value = resultSet.getBigDecimal(columnIndex);
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+        return value;
+    }
+
+    public BigDecimal getBigDecimal(String columnName) {
+        BigDecimal value = null;
+        try {
+            value = resultSet.getBigDecimal(columnName);
         } catch(SQLException ex) {
             ex.printStackTrace();
         }
