@@ -59,7 +59,7 @@ public class GambleCommand extends Command<GuildMessageReceivedEvent> {
                 while (rows.next()) {
                     String currentUser = rows.getString("user");
                     BigDecimal currentAmount = rows.getBigDecimal("amount");
-                    if ((rankAmount == null) || (rankAmount.compareTo(currentAmount) >= 0)) {
+                    if ((rankAmount == null) || (rankAmount.compareTo(currentAmount) > 0)) {
                         rank++;
                     }
                     message += "\n" + rank + ". " + currentUser + " (" + currentAmount.toString() + ")";
