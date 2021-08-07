@@ -4,6 +4,7 @@ import carlbot.Bot;
 import carlbot.Command;
 import carlbot.Emojis;
 import carlbot.database.Database;
+import carlbot.database.QueryResult;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.math.BigDecimal;
@@ -16,6 +17,7 @@ public class GambleCommand extends Command<GuildMessageReceivedEvent> {
         super(bot);
     }
     private String commandPrefix = "!gamble ";
+    private boolean showRanking;
     private boolean showAmount;
     private boolean betAll;
     private BigInteger betAmount;
@@ -28,10 +30,11 @@ public class GambleCommand extends Command<GuildMessageReceivedEvent> {
     @Override
     public void parse(GuildMessageReceivedEvent event, String content) {
         String betAmountText = content.substring(commandPrefix.length());
+        showRanking = "ranking".equals(betAmountText);
         showAmount = "?".equals(betAmountText);
         betAll = "all".equals(betAmountText);
         betAmount = null;
-        if ((!showAmount) && (!betAll)) {
+        if ((!showRanking) && (!showAmount) && (!betAll)) {
             try {
                 betAmount = new BigInteger(betAmountText);
             } catch (NumberFormatException ex) {
@@ -42,17 +45,31 @@ public class GambleCommand extends Command<GuildMessageReceivedEvent> {
 
     @Override
     public void execute(GuildMessageReceivedEvent event) {
+        Database database = bot.getDatabase();
         String user = event.getAuthor().getName();
         long date = System.currentTimeMillis();
 
         String message;
-        if ((!betAll) && (!showAmount) && (betAmount == null)) {
-            message = "?";
-        } else if ((!betAll) && (!showAmount) && (betAmount.compareTo(BigInteger.ZERO) <= 0)) {
-            message = Emojis.CARLTHINK;
-        } else {
-            try {
-                Database database = bot.getDatabase();
+        try {
+            if (showRanking) {
+                QueryResult rows = database.getQueryResult("SELECT user, amount FROM gambling ORDER BY amount DESC");
+                int rank = 0;
+                BigDecimal rankAmount = null;
+                message = "Salzstreuer-Bestenliste:";
+                while (rows.next()) {
+                    String currentUser = rows.getString("user");
+                    BigDecimal currentAmount = rows.getBigDecimal("amount");
+                    if ((rankAmount == null) || (rankAmount.compareTo(currentAmount) >= 0)) {
+                        rank++;
+                    }
+                    message += "\n" + rank + ". " + currentUser + " (" + currentAmount.toString() + ")";
+                    rankAmount = currentAmount;
+                }
+            } else if ((!betAll) && (!showAmount) && (betAmount == null)) {
+                message = "?";
+            } else if ((!betAll) && (!showAmount) && (betAmount.compareTo(BigInteger.ZERO) <= 0)) {
+                message = Emojis.CARLTHINK;
+            } else {
                 BigInteger oldAmount = BigInteger.ZERO;
                 BigDecimal oldAmountDecimal = database.getQueryResult("SELECT amount FROM gambling WHERE user = '" + database.escape(user) + "' LIMIT 1").nextBigDecimal_Close();
                 if (oldAmountDecimal != null) {
@@ -92,9 +109,9 @@ public class GambleCommand extends Command<GuildMessageReceivedEvent> {
                         }
                     }
                 }
-            } catch (SQLException ex) {
-                message = "Da ging was mit der Datenbank schief...";
             }
+        } catch (SQLException ex) {
+            message = "Da ging was mit der Datenbank schief...";
         }
 
         event.getChannel().sendMessage(message).queue();
