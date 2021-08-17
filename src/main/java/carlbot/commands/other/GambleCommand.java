@@ -94,7 +94,7 @@ public class GambleCommand extends Command<GuildMessageReceivedEvent> {
                         if (oldAmount.bitLength() > minimumDoublingGamblesToReachZero) {
                             minimumBetAmount = BigInteger.TWO.pow(oldAmount.bitLength() - minimumDoublingGamblesToReachZero);
                         }
-                        if (oldAmount.compareTo(minimumBetAmount) >= 0) {
+                        if (betAmount.compareTo(minimumBetAmount) >= 0) {
                             boolean win = (Math.random() < 0.5);
                             if (win) {
                                 newAmount = oldAmount.add(betAmount);
