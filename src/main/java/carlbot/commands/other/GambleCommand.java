@@ -88,15 +88,25 @@ public class GambleCommand extends Command<GuildMessageReceivedEvent> {
                         message = user + " hat gar keine Salzstreuer, daher schenke ich ihm 1.";
                         newAmount = BigInteger.ONE;
                     } else if (oldAmount.compareTo(betAmount) >= 0) {
-                        boolean win = (Math.random() < 0.5);
-                        if (win) {
-                            newAmount = oldAmount.add(betAmount);
-                        } else {
-                            newAmount = oldAmount.subtract(betAmount);
+                        BigInteger minimumBetAmount = BigInteger.ONE;
+                        // Ensures that players can't build up a large enough amount to ensure never going broke
+                        int minimumDoublingGamblesToReachZero = 7;
+                        if (oldAmount.bitLength() > minimumDoublingGamblesToReachZero) {
+                            minimumBetAmount = BigInteger.TWO.pow(oldAmount.bitLength() - minimumDoublingGamblesToReachZero);
                         }
-                        message = user + " " + (betAll ? "geht mit " + betAmount.toString() + " Salzstreuern all-in" : "wettet " + betAmount.toString() + " Salzstreuer")
-                                + ", " + (win ? "gewinnt" : "verliert") + " und besitzt jetzt " + newAmount.toString() + " Salzstreuer."
-                                + " " + Emojis.KARL + " " + (win ? Emojis.FEELSGOODMAN : Emojis.FEELSBADMANC);
+                        if (oldAmount.compareTo(minimumBetAmount) >= 0) {
+                            boolean win = (Math.random() < 0.5);
+                            if (win) {
+                                newAmount = oldAmount.add(betAmount);
+                            } else {
+                                newAmount = oldAmount.subtract(betAmount);
+                            }
+                            message = user + " " + (betAll ? "geht mit " + betAmount.toString() + " Salzstreuern all-in" : "wettet " + betAmount.toString() + " Salzstreuer")
+                                    + ", " + (win ? "gewinnt" : "verliert") + " und besitzt jetzt " + newAmount.toString() + " Salzstreuer."
+                                    + " " + Emojis.KARL + " " + (win ? Emojis.FEELSGOODMAN : Emojis.FEELSBADMANC);
+                        } else {
+                            message = user + ", dein Mindesteinsatz ist mittlerweile " + minimumBetAmount.toString() + " Salzstreuer.";
+                        }
                     } else {
                         message = user + ", du hast nur " + oldAmount.toString() + " Salzstreuer...";
                     }
