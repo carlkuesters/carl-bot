@@ -17,6 +17,8 @@ public class GambleCommand extends Command<GuildMessageReceivedEvent> {
         super(bot);
     }
     private String commandPrefix = "!gamble ";
+    private boolean showAllStats;
+    private boolean showOwnStats;
     private boolean showRanking;
     private boolean showAmount;
     private boolean betAll;
@@ -30,11 +32,13 @@ public class GambleCommand extends Command<GuildMessageReceivedEvent> {
     @Override
     public void parse(GuildMessageReceivedEvent event, String content) {
         String betAmountText = content.substring(commandPrefix.length());
+        showAllStats = "allstats".equals(betAmountText);
+        showOwnStats = "stats".equals(betAmountText);
         showRanking = "ranking".equals(betAmountText);
         showAmount = "?".equals(betAmountText);
         betAll = "all".equals(betAmountText);
         betAmount = null;
-        if ((!showRanking) && (!showAmount) && (!betAll)) {
+        if ((!showAllStats) && (!showOwnStats) && (!showRanking) && (!showAmount) && (!betAll)) {
             try {
                 betAmount = new BigInteger(betAmountText);
             } catch (NumberFormatException ex) {
@@ -51,7 +55,35 @@ public class GambleCommand extends Command<GuildMessageReceivedEvent> {
 
         String message;
         try {
-            if (showRanking) {
+            if (showAllStats) {
+                QueryResult rows = database.getQueryResult("SELECT user, amount, games, games_won, games_lost, amount_won, amount_lost, highscore, date FROM gambling ORDER BY amount DESC");
+                message = "Salzstreuer-Statistik:";
+                while (rows.next()) {
+                    String currentUser = rows.getString("user");
+                    BigDecimal amount = rows.getBigDecimal("amount");
+                    BigDecimal games = rows.getBigDecimal("games");
+                    BigDecimal gamesWon = rows.getBigDecimal("games_won");
+                    BigDecimal gamesLost = rows.getBigDecimal("games_lost");
+                    BigDecimal amountWon = rows.getBigDecimal("amount_won");
+                    BigDecimal amountLost = rows.getBigDecimal("amount_lost");
+                    BigDecimal highscore = rows.getBigDecimal("highscore");
+                    message += "\n- " + currentUser + " hat aktuell " + amount + " Salzstreuer, " + games + " Spiele gespielt (" + gamesWon + " Siege, " + gamesLost + " Niederlagen) und ingesamt " + amountWon + " Salzstreuer gewonnen und " + amountLost + " Salzstreuer verloren. Highscore: " + highscore;
+                }
+            } else if (showOwnStats) {
+                QueryResult row = database.getQueryResult("SELECT amount, games, games_won, games_lost, amount_won, amount_lost, highscore, date FROM gambling WHERE user = '" + database.escape(user) + "' LIMIT 1");
+                if (row.next()) {
+                    BigDecimal amount = row.getBigDecimal("amount");
+                    BigDecimal games = row.getBigDecimal("games");
+                    BigDecimal gamesWon = row.getBigDecimal("games_won");
+                    BigDecimal gamesLost = row.getBigDecimal("games_lost");
+                    BigDecimal amountWon = row.getBigDecimal("amount_won");
+                    BigDecimal amountLost = row.getBigDecimal("amount_lost");
+                    BigDecimal highscore = row.getBigDecimal("highscore");
+                    message = user + ", du hast aktuell " + amount + " Salzstreuer, " + games + " Spiele gespielt (" + gamesWon + " Siege, " + gamesLost + " Niederlagen) und ingesamt " + amountWon + " Salzstreuer gewonnen und " + amountLost + " Salzstreuer verloren. Dein Highscore: " + highscore;
+                } else {
+                    message = user + ", du hast noch nie gespielt. " + Emojis.FEELSBADMANC;
+                }
+            } else if (showRanking) {
                 QueryResult rows = database.getQueryResult("SELECT user, amount FROM gambling ORDER BY amount DESC");
                 int rank = 0;
                 BigDecimal rankAmount = null;
@@ -63,6 +95,9 @@ public class GambleCommand extends Command<GuildMessageReceivedEvent> {
                         rank++;
                     }
                     message += "\n" + rank + ". " + currentUser + " (" + currentAmount + ")";
+                    if (rank == 1) {
+                        message += " " + Emojis.CROWN;
+                    }
                     rankAmount = currentAmount;
                 }
             } else if ((!betAll) && (!showAmount) && (betAmount == null)) {
