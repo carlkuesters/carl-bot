@@ -62,7 +62,7 @@ public class GambleCommand extends Command<GuildMessageReceivedEvent> {
                     if ((rankAmount == null) || (rankAmount.compareTo(currentAmount) > 0)) {
                         rank++;
                     }
-                    message += "\n" + rank + ". " + currentUser + " (" + currentAmount.toString() + ")";
+                    message += "\n" + rank + ". " + currentUser + " (" + currentAmount + ")";
                     rankAmount = currentAmount;
                 }
             } else if ((!betAll) && (!showAmount) && (betAmount == null)) {
@@ -71,13 +71,26 @@ public class GambleCommand extends Command<GuildMessageReceivedEvent> {
                 message = Emojis.CARLTHINK;
             } else {
                 BigInteger oldAmount = BigInteger.ZERO;
-                BigDecimal oldAmountDecimal = database.getQueryResult("SELECT amount FROM gambling WHERE user = '" + database.escape(user) + "' LIMIT 1").nextBigDecimal_Close();
-                if (oldAmountDecimal != null) {
-                    oldAmount = oldAmountDecimal.toBigInteger();
+                BigInteger games = BigInteger.ZERO;
+                BigInteger gamesWon = BigInteger.ZERO;
+                BigInteger gamesLost = BigInteger.ZERO;
+                BigInteger amountWon = BigInteger.ZERO;
+                BigInteger amountLost = BigInteger.ZERO;
+                BigInteger highscore = BigInteger.ZERO;
+                QueryResult queryResult = database.getQueryResult("SELECT amount, games, games_won, games_lost, amount_won, amount_lost, highscore FROM gambling WHERE user = '" + database.escape(user) + "' LIMIT 1");
+                boolean userExists = queryResult.next();
+                if (userExists) {
+                    oldAmount = queryResult.getBigDecimal("amount").toBigInteger();
+                    games = queryResult.getBigDecimal("games").toBigInteger();
+                    gamesWon = queryResult.getBigDecimal("games_won").toBigInteger();
+                    gamesLost = queryResult.getBigDecimal("games_lost").toBigInteger();
+                    amountWon = queryResult.getBigDecimal("amount_won").toBigInteger();
+                    amountLost = queryResult.getBigDecimal("amount_lost").toBigInteger();
+                    highscore = queryResult.getBigDecimal("highscore").toBigInteger();
                 }
 
                 if (showAmount) {
-                    message = user + ", du hast " + oldAmount.toString() + " Salzstreuer. " + Emojis.KARL;
+                    message = user + ", du hast " + oldAmount + " Salzstreuer. " + Emojis.KARL;
                 } else {
                     if (betAll) {
                         betAmount = oldAmount;
@@ -98,24 +111,50 @@ public class GambleCommand extends Command<GuildMessageReceivedEvent> {
                             boolean win = (Math.random() < 0.5);
                             if (win) {
                                 newAmount = oldAmount.add(betAmount);
+                                gamesWon = gamesWon.add(BigInteger.ONE);
+                                amountWon = amountWon.add(betAmount);
+                                if (newAmount.compareTo(highscore) > 0) {
+                                    highscore = newAmount;
+                                }
                             } else {
                                 newAmount = oldAmount.subtract(betAmount);
+                                gamesLost = gamesLost.add(BigInteger.ONE);
+                                amountLost = amountLost.add(betAmount);
                             }
-                            message = user + " " + (betAll ? "geht mit " + betAmount.toString() + " Salzstreuern all-in" : "wettet " + betAmount.toString() + " Salzstreuer")
-                                    + ", " + (win ? "gewinnt" : "verliert") + " und besitzt jetzt " + newAmount.toString() + " Salzstreuer."
+                            games = games.add(BigInteger.ONE);
+                            message = user + " " + (betAll ? "geht mit " + betAmount + " Salzstreuern all-in" : "wettet " + betAmount + " Salzstreuer")
+                                    + ", " + (win ? "gewinnt" : "verliert") + " und besitzt jetzt " + newAmount + " Salzstreuer."
                                     + " " + Emojis.KARL + " " + (win ? Emojis.FEELSGOODMAN : Emojis.FEELSBADMANC);
                         } else {
-                            message = user + ", dein Mindesteinsatz ist mittlerweile " + minimumBetAmount.toString() + " Salzstreuer.";
+                            message = user + ", dein Mindesteinsatz ist mittlerweile " + minimumBetAmount + " Salzstreuer.";
                         }
                     } else {
-                        message = user + ", du hast nur " + oldAmount.toString() + " Salzstreuer...";
+                        message = user + ", du hast nur " + oldAmount + " Salzstreuer...";
                     }
 
                     if (newAmount != null) {
-                        if (oldAmountDecimal == null) {
-                            database.executeQuery("INSERT INTO gambling (user, amount, date) VALUES ('" + database.escape(user) + "', " + newAmount.toString() + ", " + date + ")");
+                        if (userExists) {
+                            database.executeQuery("UPDATE gambling SET " +
+                                    "amount = " + newAmount + ", " +
+                                    "games = " + games + ", " +
+                                    "games_won = " + gamesWon + ", " +
+                                    "games_lost = " + gamesLost + ", " +
+                                    "amount_won = " + amountWon + ", " +
+                                    "amount_lost = " + amountLost + ", " +
+                                    "highscore = " + highscore + ", " +
+                                    "date = " + date + " " +
+                                    "WHERE user = '" + database.escape(user) + "' LIMIT 1");
                         } else {
-                            database.executeQuery("UPDATE gambling SET amount = " + newAmount + ", date = " + date + " WHERE user = '" + database.escape(user) + "' LIMIT 1");
+                            database.executeQuery("INSERT INTO gambling (user, amount, games, games_won, games_lost, amount_won, amount_lost, highscore, date) VALUES (" +
+                                    "'" + database.escape(user) + "', " +
+                                    newAmount + ", " +
+                                    games + ", " +
+                                    gamesWon + ", " +
+                                    gamesLost + ", " +
+                                    amountWon + ", " +
+                                    amountLost + ", " +
+                                    highscore + ", " +
+                                    date + ")");
                         }
                     }
                 }
