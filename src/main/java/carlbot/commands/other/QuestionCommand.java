@@ -28,7 +28,8 @@ public class QuestionCommand extends Command<GuildMessageReceivedEvent> {
             "Yesssss.", "Nö.", "Früher nein, mittlerweile ja.",
             "So sehr wie Fabi sich einen reinluckt.", "So sehr wie Carl Glück in TFT hat.",
             "Ist Wasser nass?", "Verrat ich nicht.", "Ooooh ja!",
-            "So sehr wie meine Bildersuche funktioniert."
+            "So sehr wie meine Bildersuche funktioniert.", "Sichi Siggi.",
+            "Klar wie Kloßbrühe", "So sehr wie Anna Frühschicht mag.", "So sehr wie Anna Spätschicht mag."
     };
 
     @Override
