@@ -17,7 +17,7 @@ public class CountCommand extends Command<GuildMessageReceivedEvent> {
         super(bot);
     }
     private String commandPrefix = "!count ";
-    private SimpleDateFormat lastDateFormat = new SimpleDateFormat("dd. MMMM yyyy, HH:mm:ss");
+    private SimpleDateFormat lastDateFormat = new SimpleDateFormat("dd.MM.yyyy, HH:mm:ss");
     private String name;
     private int amount;
 
