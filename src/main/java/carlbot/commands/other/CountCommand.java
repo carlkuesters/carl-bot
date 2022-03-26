@@ -48,11 +48,11 @@ public class CountCommand extends Command<GuildMessageReceivedEvent> {
             if (counterExists) {
                 oldValue = queryResult.getInteger("value");
             }
-            int newValue = oldValue + amount;
+            int newValue = Math.max(oldValue + amount, 0);
             message = name + " Counter = " + newValue + " " + Emojis.YEP;
 
             if (amount != 0) {
-                if (newValue != 0) {
+                if (newValue > 0) {
                     for (int i = 1000000; i > 1; i /= 10) {
                         if ((newValue % i) == 0) {
                             message += " " + i + "10-ER JUBILÄUM! " + Emojis.POG;
