@@ -55,7 +55,7 @@ public class CountCommand extends Command<GuildMessageReceivedEvent> {
                 if (newValue > 0) {
                     for (int i = 1000000; i > 1; i /= 10) {
                         if ((newValue % i) == 0) {
-                            message += " " + i + "10-ER JUBILÄUM! " + Emojis.POG;
+                            message += " " + i + "-ER JUBILÄUM! " + Emojis.POG;
                             break;
                         }
                     }
