@@ -44,11 +44,12 @@ public class CountCommand extends Command<GuildMessageReceivedEvent> {
             QueryResult queryResult = database.getQueryResult("SELECT id, value, date FROM counters WHERE name = '" + database.escape(name) + "' LIMIT 1");
 
             int oldValue = 0;
-            if (queryResult != null) {
+            boolean counterExists = queryResult.next();
+            if (counterExists) {
                 oldValue = queryResult.getInteger("value");
             }
             int newValue = oldValue + amount;
-            message = name + " counter = " + newValue + " " + Emojis.YEP;
+            message = name + " Counter = " + newValue + " " + Emojis.YEP;
 
             if (amount != 0) {
                 for (int i = 10; i <= 1000000; i *= 10) {
@@ -57,7 +58,7 @@ public class CountCommand extends Command<GuildMessageReceivedEvent> {
                     }
                 }
 
-                if (queryResult != null) {
+                if (counterExists) {
                     database.executeQuery("UPDATE counters SET " +
                             "value = " + newValue + ", " +
                             "date = " + date + " " +
