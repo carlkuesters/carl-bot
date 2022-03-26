@@ -52,9 +52,12 @@ public class CountCommand extends Command<GuildMessageReceivedEvent> {
             message = name + " Counter = " + newValue + " " + Emojis.YEP;
 
             if (amount != 0) {
-                for (int i = 10; i <= 1000000; i *= 10) {
-                    if ((newValue % i) == 0) {
-                        message += " JUBILÄUM! " + Emojis.POG;
+                if (newValue != 0) {
+                    for (int i = 1000000; i > 1; i /= 10) {
+                        if ((newValue % i) == 0) {
+                            message += " " + i + "10-ER JUBILÄUM! " + Emojis.POG;
+                            break;
+                        }
                     }
                 }
 
