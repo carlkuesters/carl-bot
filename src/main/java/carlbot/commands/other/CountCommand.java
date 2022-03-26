@@ -8,6 +8,8 @@ import carlbot.database.QueryResult;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CountCommand extends Command<GuildMessageReceivedEvent> {
 
@@ -15,6 +17,7 @@ public class CountCommand extends Command<GuildMessageReceivedEvent> {
         super(bot);
     }
     private String commandPrefix = "!count ";
+    private SimpleDateFormat lastDateFormat = new SimpleDateFormat("dd. MMMM yyyy, HH:mm:ss");
     private String name;
     private int amount;
 
@@ -37,7 +40,7 @@ public class CountCommand extends Command<GuildMessageReceivedEvent> {
     @Override
     public void execute(GuildMessageReceivedEvent event) {
         Database database = bot.getDatabase();
-        long date = System.currentTimeMillis();
+        long currentDate = System.currentTimeMillis();
 
         String message;
         try {
@@ -64,15 +67,18 @@ public class CountCommand extends Command<GuildMessageReceivedEvent> {
                 if (counterExists) {
                     database.executeQuery("UPDATE counters SET " +
                             "value = " + newValue + ", " +
-                            "date = " + date + " " +
+                            "date = " + currentDate + " " +
                             "WHERE id = " + queryResult.getInteger("id") + " " +
                             "LIMIT 1");
                 } else {
                     database.executeQuery("INSERT INTO counters (name, value, date) VALUES (" +
                             "'" + database.escape(name) + "', " +
                             newValue + ", " +
-                            date + ")");
+                            currentDate + ")");
                 }
+            } else {
+                Date lastDate = new Date(queryResult.getLong("date"));
+                message += " (Letztes Mal am " + lastDateFormat.format(lastDate) + ")";
             }
         } catch (SQLException ex) {
             message = "Da ging was mit der Datenbank schief...";
