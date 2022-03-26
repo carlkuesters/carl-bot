@@ -6,5 +6,7 @@ public class Emojis {
     public static String FEELSGOODMAN = "<:feelsgoodman:563456901270994954>";
     public static String FEELSBADMANC = "<:feelsbadmanC:563459119936307221>";
     public static String KARL = "<:karl:230412781805895680>";
+    public static String YEP = "<:yep:923545594616745994>";
+    public static String POG = "<:pog:923545674463735809>";
     public static String CROWN = "\uD83D\uDC51";
 }

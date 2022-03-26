@@ -47,6 +47,7 @@ public class Bot extends ListenerAdapter {
             new ChooseCommand(this),
             new CommandSaveCommand(this),
             new GambleCommand(this),
+            new CountCommand(this),
             // Has to be last since it will match every message starting with !
             new CommandExecuteCommand(this),
         };
