@@ -11,7 +11,7 @@
         <version.gson>2.9.0</version.gson>
         <version.jda>4.4.0_352</version.jda>
         <version.json>20220320</version.json>
-        <version.jsoup>1.14.3</version.jsoup>
+        <version.jsoup>1.15.3</version.jsoup>
         <version.lavaplayer>1.3.77</version.lavaplayer>
         <version.mysql-connector>8.0.28</version.mysql-connector>
         <version.opencv>4.5.1-2</version.opencv>
