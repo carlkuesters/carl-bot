@@ -10,7 +10,7 @@ if [ -n "$VERSION" ]; then
 fi
 
 # Build
-mvn clean install
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64;mvn clean install
 
 # Deploy
 rm -rf "${TARGET}data"
