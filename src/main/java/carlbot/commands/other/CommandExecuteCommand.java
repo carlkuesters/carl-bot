@@ -2,11 +2,11 @@ package carlbot.commands.other;
 
 import carlbot.Bot;
 import carlbot.Command;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.sql.SQLException;
 
-public class CommandExecuteCommand extends Command<GuildMessageReceivedEvent> {
+public class CommandExecuteCommand extends Command<MessageReceivedEvent> {
 
     public CommandExecuteCommand(Bot bot) {
         super(bot);
@@ -15,12 +15,12 @@ public class CommandExecuteCommand extends Command<GuildMessageReceivedEvent> {
     private String commandContent;
 
     @Override
-    public boolean isMatching(GuildMessageReceivedEvent event, String content) {
+    public boolean isMatching(MessageReceivedEvent event, String content) {
         return content.startsWith(commandPrefix);
     }
 
     @Override
-    public void parse(GuildMessageReceivedEvent event, String content) {
+    public void parse(MessageReceivedEvent event, String content) {
         long guildId = event.getGuild().getIdLong();
         String commandName = content.substring(commandPrefix.length()).trim();
         try {
@@ -31,7 +31,7 @@ public class CommandExecuteCommand extends Command<GuildMessageReceivedEvent> {
     }
 
     @Override
-    public void execute(GuildMessageReceivedEvent event) {
+    public void execute(MessageReceivedEvent event) {
         if (commandContent != null) {
             bot.handleEvent(event, commandContent);
         }

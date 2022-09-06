@@ -5,11 +5,12 @@ import carlbot.Command;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
-import net.dv8tion.jda.api.entities.VoiceChannel;
-import net.dv8tion.jda.api.events.guild.GenericGuildEvent;
+import net.dv8tion.jda.api.entities.AudioChannel;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.managers.AudioManager;
 
-public abstract class AudioCommand<T extends GenericGuildEvent> extends Command<T> {
+public abstract class AudioCommand<T extends Event> extends Command<T> {
 
     AudioCommand(Bot bot, String commandPrefix) {
         super(bot);
@@ -22,23 +23,26 @@ public abstract class AudioCommand<T extends GenericGuildEvent> extends Command<
     protected AudioLibrary audioLibrary;
 
     @Override
-    public void parse(GenericGuildEvent event, String content) {
+    public void parse(T event, String content) {
 
     }
 
     @Override
     public void execute(T event) {
-        AudioManager audioManager = event.getGuild().getAudioManager();
+        Guild guild = getGuild(event);
+        AudioManager audioManager = guild.getAudioManager();
         AudioPlayer audioPlayer = audioPlayerManager.createPlayer();
-        audioManager.setSendingHandler(new BotGuildAudioPlayerSendHandler(audioPlayer, bot, event.getGuild()));
-        VoiceChannel myChannel = getVoiceChannelToJoin(event);
-        if (myChannel != null) {
+        audioManager.setSendingHandler(new BotGuildAudioPlayerSendHandler(audioPlayer, bot, guild));
+        AudioChannel audioChannel = getAudioChannelToJoin(event);
+        if (audioChannel != null) {
             play(event, audioPlayer);
-            audioManager.openAudioConnection(myChannel);
+            audioManager.openAudioConnection(audioChannel);
         }
     }
 
-    protected abstract VoiceChannel getVoiceChannelToJoin(T event);
+    protected abstract Guild getGuild(T event);
+
+    protected abstract AudioChannel getAudioChannelToJoin(T event);
 
     protected abstract void play(T event, AudioPlayer audioPlayer);
 }

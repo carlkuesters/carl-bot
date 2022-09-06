@@ -2,9 +2,9 @@ package carlbot.commands.other;
 
 import carlbot.Bot;
 import carlbot.Command;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-public class EchoCommand extends Command<GuildMessageReceivedEvent> {
+public class EchoCommand extends Command<MessageReceivedEvent> {
 
     public EchoCommand(Bot bot) {
         super(bot);
@@ -13,17 +13,17 @@ public class EchoCommand extends Command<GuildMessageReceivedEvent> {
     private String output;
 
     @Override
-    public boolean isMatching(GuildMessageReceivedEvent event, String content) {
+    public boolean isMatching(MessageReceivedEvent event, String content) {
         return content.startsWith(commandPrefix);
     }
 
     @Override
-    public void parse(GuildMessageReceivedEvent event, String content) {
+    public void parse(MessageReceivedEvent event, String content) {
         output = content.substring(commandPrefix.length());
     }
 
     @Override
-    public void execute(GuildMessageReceivedEvent event) {
+    public void execute(MessageReceivedEvent event) {
         event.getChannel().sendMessage(output).queue();
     }
 }

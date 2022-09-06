@@ -2,21 +2,22 @@ package carlbot.commands.other;
 
 import carlbot.Bot;
 import carlbot.Command;
+import carlbot.Emojis;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-public class ReactOnWaveCommand extends Command<GuildMessageReceivedEvent> {
+public class ReactOnWaveCommand extends Command<MessageReceivedEvent> {
 
     public ReactOnWaveCommand(Bot bot) {
         super(bot);
     }
-    private static final String EMOTE_WAVE_RAW = "\uD83D\uDC4B";
 
     private Message receivedMessage;
 
     @Override
-    public boolean isMatching(GuildMessageReceivedEvent event, String content) {
-        if (EMOTE_WAVE_RAW.equals(content)) {
+    public boolean isMatching(MessageReceivedEvent event, String content) {
+        if (Emojis.WAVE.equals(content)) {
             receivedMessage = event.getMessage();
             return true;
         }
@@ -24,12 +25,12 @@ public class ReactOnWaveCommand extends Command<GuildMessageReceivedEvent> {
     }
 
     @Override
-    public void parse(GuildMessageReceivedEvent event, String content) {
+    public void parse(MessageReceivedEvent event, String content) {
 
     }
 
     @Override
-    public void execute(GuildMessageReceivedEvent event) {
-        receivedMessage.addReaction(EMOTE_WAVE_RAW).submit();
+    public void execute(MessageReceivedEvent event) {
+        receivedMessage.addReaction(Emoji.fromUnicode(Emojis.WAVE)).submit();
     }
 }

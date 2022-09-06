@@ -4,11 +4,11 @@ import carlbot.Bot;
 import carlbot.Command;
 import carlbot.Emojis;
 import carlbot.database.Database;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.sql.SQLException;
 
-public class CommandSaveCommand extends Command<GuildMessageReceivedEvent> {
+public class CommandSaveCommand extends Command<MessageReceivedEvent> {
 
     public CommandSaveCommand(Bot bot) {
         super(bot);
@@ -18,12 +18,12 @@ public class CommandSaveCommand extends Command<GuildMessageReceivedEvent> {
     private String commandContent;
 
     @Override
-    public boolean isMatching(GuildMessageReceivedEvent event, String content) {
+    public boolean isMatching(MessageReceivedEvent event, String content) {
         return content.startsWith(commandPrefix);
     }
 
     @Override
-    public void parse(GuildMessageReceivedEvent event, String content) {
+    public void parse(MessageReceivedEvent event, String content) {
         String commandNameAndContent = content.substring(commandPrefix.length());
         int commandNameAndContentSeparatorIndex = commandNameAndContent.indexOf(" ");
         commandName = commandNameAndContent.substring(0, commandNameAndContentSeparatorIndex).trim();
@@ -31,7 +31,7 @@ public class CommandSaveCommand extends Command<GuildMessageReceivedEvent> {
     }
 
     @Override
-    public void execute(GuildMessageReceivedEvent event) {
+    public void execute(MessageReceivedEvent event) {
         String message;
         if (commandContent.startsWith(commandPrefix)) {
             message = Emojis.KAPPA;

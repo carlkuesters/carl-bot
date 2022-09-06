@@ -9,8 +9,9 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.events.guild.voice.GenericGuildVoiceEvent;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import javax.security.auth.login.LoginException;
 import java.sql.SQLException;
@@ -29,7 +30,7 @@ public class Bot extends ListenerAdapter {
         database.connect();
         initializeCommands();
         String discordBotToken = FileManager.getFileContent("./discord.ini");
-        JDA jda = JDABuilder.createDefault(discordBotToken).build();
+        JDA jda = JDABuilder.createDefault(discordBotToken).enableIntents(GatewayIntent.MESSAGE_CONTENT).build();
         jda.addEventListener(this);
     }
 
@@ -57,24 +58,26 @@ public class Bot extends ListenerAdapter {
     }
 
     @Override
-    public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        handleGuildMessageReceivedEvent(event, null);
+    public void onMessageReceived(MessageReceivedEvent event) {
+        super.onMessageReceived(event);
+        handleGenericMessageReceivedEvent(event, null);
     }
 
     @Override
     public void onGenericGuildVoice(GenericGuildVoiceEvent event) {
+        super.onGenericGuildVoice(event);
         handleGenericGuildVoiceEvent(event);
     }
 
     public void handleEvent(Event event, String forcedContent) {
-        if (event instanceof GuildMessageReceivedEvent) {
-            handleGuildMessageReceivedEvent((GuildMessageReceivedEvent) event, forcedContent);
+        if (event instanceof MessageReceivedEvent) {
+            handleGenericMessageReceivedEvent((MessageReceivedEvent) event, forcedContent);
         } else if (event instanceof GenericGuildVoiceEvent) {
             handleGenericGuildVoiceEvent((GenericGuildVoiceEvent) event);
         }
     }
 
-    private void handleGuildMessageReceivedEvent(GuildMessageReceivedEvent event, String forcedContent) {
+    private void handleGenericMessageReceivedEvent(MessageReceivedEvent event, String forcedContent) {
         if (event.getAuthor() != event.getJDA().getSelfUser()) {
             String content = ((forcedContent != null) ? forcedContent : event.getMessage().getContentRaw());
             try {

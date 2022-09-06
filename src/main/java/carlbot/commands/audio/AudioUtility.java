@@ -1,5 +1,6 @@
 package carlbot.commands.audio;
 
+import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.managers.AudioManager;
@@ -9,9 +10,9 @@ import java.util.List;
 
 public class AudioUtility {
 
-    public static VoiceChannel getCurrentOrBestVoiceChannel(Guild guild) {
+    public static AudioChannel getCurrentOrBestAudioChannel(Guild guild) {
         AudioManager audioManager = guild.getAudioManager();
-        VoiceChannel connectedChannel = audioManager.getConnectedChannel();
+        AudioChannel connectedChannel = audioManager.getConnectedChannel();
         if (connectedChannel != null) {
             return connectedChannel;
         }

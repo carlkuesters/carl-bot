@@ -2,34 +2,31 @@ package carlbot.commands.other;
 
 import carlbot.Bot;
 import carlbot.Command;
-import net.dv8tion.jda.api.entities.Emote;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import carlbot.Emojis;
+import net.dv8tion.jda.api.entities.emoji.CustomEmoji;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.Optional;
 
-public class HeyCarlCommand extends Command<GuildMessageReceivedEvent> {
+public class HeyCarlCommand extends Command<MessageReceivedEvent> {
 
     public HeyCarlCommand(Bot bot) {
         super(bot);
     }
     private static final int PAUSE_DURATION = 60000;
-    private static final String EMOTE_NAME_HEY_CARL_W = "heycarlW";
-    private static final String EMOTE_NAME_HEY_CARL_E = "heycarlE";
-    private static final String EMOTE_MENTION_HEY_CARL_W = "<:heycarlW:421005325118734337>";
-    private static final String EMOTE_MENTION_HEY_CARL_E = "<:heycarlE:422459785871360000>";
 
     private long lastResponseTimestamp;
-    private String receivedEmoteName;
+    private String receivedEmojiAsMention;
     private String responseMessage;
 
     @Override
-    public boolean isMatching(GuildMessageReceivedEvent event, String content) {
+    public boolean isMatching(MessageReceivedEvent event, String content) {
         if ((System.currentTimeMillis() - lastResponseTimestamp) > PAUSE_DURATION) {
-            Optional<Emote> heyCarlEmote = event.getMessage().getEmotes().stream()
-                    .filter(emote -> EMOTE_NAME_HEY_CARL_W.equals(emote.getName()) || EMOTE_NAME_HEY_CARL_E.equals(emote.getName()))
+            Optional<CustomEmoji> heyCarlEmoji = event.getMessage().getMentions().getCustomEmojis().stream()
+                    .filter(customEmoji -> Emojis.HEY_CARL_W.equals(customEmoji.getAsMention()) || Emojis.HEY_CARL_E.equals(customEmoji.getAsMention()))
                     .findFirst();
-            if (heyCarlEmote.isPresent()) {
-                receivedEmoteName = heyCarlEmote.get().getName();
+            if (heyCarlEmoji.isPresent()) {
+                receivedEmojiAsMention = heyCarlEmoji.get().getAsMention();
                 return true;
             }
         }
@@ -37,12 +34,12 @@ public class HeyCarlCommand extends Command<GuildMessageReceivedEvent> {
     }
 
     @Override
-    public void parse(GuildMessageReceivedEvent event, String content) {
-        responseMessage = (EMOTE_NAME_HEY_CARL_W.equals(receivedEmoteName) ? EMOTE_MENTION_HEY_CARL_E : EMOTE_MENTION_HEY_CARL_W);
+    public void parse(MessageReceivedEvent event, String content) {
+        responseMessage = (Emojis.HEY_CARL_W.equals(receivedEmojiAsMention) ? Emojis.HEY_CARL_E : Emojis.HEY_CARL_W);
     }
 
     @Override
-    public void execute(GuildMessageReceivedEvent event) {
+    public void execute(MessageReceivedEvent event) {
         event.getChannel().sendMessage(responseMessage).queue();
         lastResponseTimestamp = System.currentTimeMillis();
     }

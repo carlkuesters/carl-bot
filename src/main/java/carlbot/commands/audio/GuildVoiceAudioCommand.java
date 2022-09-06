@@ -1,7 +1,8 @@
 package carlbot.commands.audio;
 
 import carlbot.Bot;
-import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.AudioChannel;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.guild.voice.GenericGuildVoiceEvent;
 
 public abstract class GuildVoiceAudioCommand extends AudioCommand<GenericGuildVoiceEvent> {
@@ -11,7 +12,12 @@ public abstract class GuildVoiceAudioCommand extends AudioCommand<GenericGuildVo
     }
 
     @Override
-    protected VoiceChannel getVoiceChannelToJoin(GenericGuildVoiceEvent event) {
+    protected Guild getGuild(GenericGuildVoiceEvent event) {
+        return event.getGuild();
+    }
+
+    @Override
+    protected AudioChannel getAudioChannelToJoin(GenericGuildVoiceEvent event) {
         return event.getVoiceState().getChannel();
     }
 }

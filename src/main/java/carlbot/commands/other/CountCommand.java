@@ -5,13 +5,13 @@ import carlbot.Command;
 import carlbot.Emojis;
 import carlbot.database.Database;
 import carlbot.database.QueryResult;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class CountCommand extends Command<GuildMessageReceivedEvent> {
+public class CountCommand extends Command<MessageReceivedEvent> {
 
     public CountCommand(Bot bot) {
         super(bot);
@@ -22,12 +22,12 @@ public class CountCommand extends Command<GuildMessageReceivedEvent> {
     private int amount;
 
     @Override
-    public boolean isMatching(GuildMessageReceivedEvent event, String content) {
+    public boolean isMatching(MessageReceivedEvent event, String content) {
         return content.startsWith(commandPrefix);
     }
 
     @Override
-    public void parse(GuildMessageReceivedEvent event, String content) {
+    public void parse(MessageReceivedEvent event, String content) {
         String[] commandParts = content.substring(commandPrefix.length()).split(" ");
         name = commandParts[0];
         if (commandParts.length > 1) {
@@ -38,7 +38,7 @@ public class CountCommand extends Command<GuildMessageReceivedEvent> {
     }
 
     @Override
-    public void execute(GuildMessageReceivedEvent event) {
+    public void execute(MessageReceivedEvent event) {
         Database database = bot.getDatabase();
         long currentDate = System.currentTimeMillis();
 

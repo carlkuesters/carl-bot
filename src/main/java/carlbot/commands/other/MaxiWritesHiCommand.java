@@ -2,14 +2,14 @@ package carlbot.commands.other;
 
 import carlbot.Bot;
 import carlbot.commands.audio.AudioUtility;
-import carlbot.commands.audio.GuildMessageAudioCommand;
+import carlbot.commands.audio.MessageAudioCommand;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.source.local.LocalAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import net.dv8tion.jda.api.entities.VoiceChannel;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.entities.AudioChannel;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-public class MaxiWritesHiCommand extends GuildMessageAudioCommand {
+public class MaxiWritesHiCommand extends MessageAudioCommand {
 
     public MaxiWritesHiCommand(Bot bot) {
         super(bot, null);
@@ -18,7 +18,7 @@ public class MaxiWritesHiCommand extends GuildMessageAudioCommand {
     }
 
     @Override
-    public boolean isMatching(GuildMessageReceivedEvent event, String content) {
+    public boolean isMatching(MessageReceivedEvent event, String content) {
         if (event.getAuthor().getName().equals("GameUser21")) {
             String contentLowerCase = content.toLowerCase();
             if (contentLowerCase.equals("hi") || (contentLowerCase.startsWith("hi") && contentLowerCase.contains("^^"))) {
@@ -29,12 +29,12 @@ public class MaxiWritesHiCommand extends GuildMessageAudioCommand {
     }
 
     @Override
-    protected VoiceChannel getVoiceChannelToJoin(GuildMessageReceivedEvent event) {
-        return AudioUtility.getCurrentOrBestVoiceChannel(event.getGuild());
+    protected AudioChannel getAudioChannelToJoin(MessageReceivedEvent event) {
+        return AudioUtility.getCurrentOrBestAudioChannel(event.getGuild());
     }
 
     @Override
-    protected void play(GuildMessageReceivedEvent event, AudioPlayer audioPlayer) {
+    protected void play(MessageReceivedEvent event, AudioPlayer audioPlayer) {
         AudioTrack audioTrack = audioLibrary.getTrack("maxi_hi");
         audioPlayer.playTrack(audioTrack.makeClone());
     }

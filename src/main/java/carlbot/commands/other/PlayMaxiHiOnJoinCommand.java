@@ -5,8 +5,8 @@ import carlbot.commands.audio.GuildVoiceAudioCommand;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.source.local.LocalAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.guild.voice.GenericGuildVoiceEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent;
@@ -24,7 +24,7 @@ public class PlayMaxiHiOnJoinCommand extends GuildVoiceAudioCommand {
         if (!bot.isPlayingAudioInGuild(event.getGuild())) {
             if ((event instanceof GuildVoiceJoinEvent) || (event instanceof GuildVoiceMoveEvent)) {
                 Member botGuildMember = event.getGuild().getMember(event.getJDA().getSelfUser());
-                VoiceChannel botChannel = botGuildMember.getVoiceState().getChannel();
+                AudioChannel botChannel = botGuildMember.getVoiceState().getChannel();
                 if (event.getVoiceState().getChannel() == botChannel) {
                     return true;
                 }

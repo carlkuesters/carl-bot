@@ -5,13 +5,13 @@ import carlbot.Command;
 import carlbot.Emojis;
 import carlbot.database.Database;
 import carlbot.database.QueryResult;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.SQLException;
 
-public class GambleCommand extends Command<GuildMessageReceivedEvent> {
+public class GambleCommand extends Command<MessageReceivedEvent> {
 
     public GambleCommand(Bot bot) {
         super(bot);
@@ -25,12 +25,12 @@ public class GambleCommand extends Command<GuildMessageReceivedEvent> {
     private BigInteger betAmount;
 
     @Override
-    public boolean isMatching(GuildMessageReceivedEvent event, String content) {
+    public boolean isMatching(MessageReceivedEvent event, String content) {
         return content.startsWith(commandPrefix);
     }
 
     @Override
-    public void parse(GuildMessageReceivedEvent event, String content) {
+    public void parse(MessageReceivedEvent event, String content) {
         String betAmountText = content.substring(commandPrefix.length());
         showAllStats = "allstats".equals(betAmountText);
         showOwnStats = "stats".equals(betAmountText);
@@ -48,7 +48,7 @@ public class GambleCommand extends Command<GuildMessageReceivedEvent> {
     }
 
     @Override
-    public void execute(GuildMessageReceivedEvent event) {
+    public void execute(MessageReceivedEvent event) {
         Database database = bot.getDatabase();
         String user = event.getAuthor().getName();
         long date = System.currentTimeMillis();

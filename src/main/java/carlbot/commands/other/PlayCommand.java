@@ -2,7 +2,7 @@ package carlbot.commands.other;
 
 import carlbot.Bot;
 import carlbot.FileManager;
-import carlbot.commands.audio.GuildMessageAudioCommand;
+import carlbot.commands.audio.MessageAudioCommand;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.source.bandcamp.BandcampAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.http.HttpAudioSourceManager;
@@ -12,15 +12,15 @@ import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.track.TrackMarker;
 import com.sedmelluq.discord.lavaplayer.track.TrackMarkerHandler;
-import com.wrapper.spotify.SpotifyApi;
-import com.wrapper.spotify.exceptions.SpotifyWebApiException;
-import com.wrapper.spotify.model_objects.IPlaylistItem;
-import com.wrapper.spotify.model_objects.credentials.ClientCredentials;
-import com.wrapper.spotify.model_objects.specification.ArtistSimplified;
-import com.wrapper.spotify.model_objects.specification.Playlist;
-import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
-import com.wrapper.spotify.model_objects.specification.Track;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import se.michaelthelin.spotify.SpotifyApi;
+import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
+import se.michaelthelin.spotify.model_objects.IPlaylistItem;
+import se.michaelthelin.spotify.model_objects.credentials.ClientCredentials;
+import se.michaelthelin.spotify.model_objects.specification.ArtistSimplified;
+import se.michaelthelin.spotify.model_objects.specification.Playlist;
+import se.michaelthelin.spotify.model_objects.specification.PlaylistTrack;
+import se.michaelthelin.spotify.model_objects.specification.Track;
 import org.apache.hc.core5.http.ParseException;
 
 import java.io.IOException;
@@ -30,7 +30,7 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PlayCommand extends GuildMessageAudioCommand {
+public class PlayCommand extends MessageAudioCommand {
 
     public PlayCommand(Bot bot) {
         super(bot, "!play");
@@ -54,7 +54,7 @@ public class PlayCommand extends GuildMessageAudioCommand {
     private Long endPosition;
 
     @Override
-    public void parse(GuildMessageReceivedEvent event, String content) {
+    public void parse(MessageReceivedEvent event, String content) {
         audioIdentifier = content.substring(commandPrefix.length()).trim();
         parseTimeRange();
         if (!isURL(audioIdentifier)) {
@@ -129,7 +129,7 @@ public class PlayCommand extends GuildMessageAudioCommand {
     }
 
     @Override
-    protected void play(GuildMessageReceivedEvent event, AudioPlayer audioPlayer) {
+    protected void play(MessageReceivedEvent event, AudioPlayer audioPlayer) {
         audioPlayer.setVolume(12);
         audioLibrary.loadTrack(audioIdentifier, audioTrack -> {
             if (startPosition != null) {

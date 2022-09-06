@@ -1,12 +1,12 @@
 package carlbot.commands.tts;
 
 import carlbot.Bot;
-import carlbot.commands.audio.GuildMessageAudioCommand;
+import carlbot.commands.audio.MessageAudioCommand;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.source.local.LocalAudioSourceManager;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-public class TextToSpeechCommand extends GuildMessageAudioCommand {
+public class TextToSpeechCommand extends MessageAudioCommand {
 
     public TextToSpeechCommand(Bot bot) {
         super(bot, "!say ");
@@ -20,12 +20,12 @@ public class TextToSpeechCommand extends GuildMessageAudioCommand {
     private String text;
 
     @Override
-    public void parse(GuildMessageReceivedEvent event, String content) {
+    public void parse(MessageReceivedEvent event, String content) {
         text = content.substring(commandPrefix.length());
     }
 
     @Override
-    protected void play(GuildMessageReceivedEvent event, AudioPlayer audioPlayer) {
+    protected void play(MessageReceivedEvent event, AudioPlayer audioPlayer) {
         TextToSpeechResult textToSpeechResult = textToSpeechGenerator.generate(text);
         TextToSpeechPlayer textToSpeechPlayer = new TextToSpeechPlayer(textToSpeechResult);
         audioPlayer.setVolume(150);
