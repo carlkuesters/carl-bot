@@ -49,12 +49,12 @@ public class Bot extends ListenerAdapter {
             new CommandSaveCommand(this),
             new GambleCommand(this),
             new CountCommand(this),
+            new PlayCircusOnFirstBloodCommand(this),
             // Has to be last since it will match every message starting with !
             new CommandExecuteCommand(this),
         };
         guildVoiceCommands = new Command[] {
-            new PlayMaxiHiOnJoinCommand(this),
-            new PlayCircusOnFirstBloodCommand(this),
+            new PlayMaxiHiOnJoinCommand(this)
         };
     }
 
