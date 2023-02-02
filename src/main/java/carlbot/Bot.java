@@ -53,7 +53,8 @@ public class Bot extends ListenerAdapter {
             new CommandExecuteCommand(this),
         };
         guildVoiceCommands = new Command[] {
-            new PlayMaxiHiOnJoinCommand(this)
+            new PlayMaxiHiOnJoinCommand(this),
+            new PlayCircusOnFirstBloodCommand(this),
         };
     }
 
