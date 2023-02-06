@@ -49,7 +49,7 @@ public class Bot extends ListenerAdapter {
             new CommandSaveCommand(this),
             new GambleCommand(this),
             new CountCommand(this),
-            new PlayCircusOnFirstBloodCommand(this),
+            new PlaySoundOnLeagueMessageCommand(this),
             // Has to be last since it will match every message starting with !
             new CommandExecuteCommand(this),
         };
