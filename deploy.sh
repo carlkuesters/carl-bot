@@ -18,4 +18,4 @@ mv data "${TARGET}"
 rm -rf "${TARGET}tmp"
 mkdir "${TARGET}tmp"
 mv target/carl-bot-1.0-SNAPSHOT-jar-with-dependencies.jar "${TARGET}carl-bot.jar"
-sh "${TARGET}control.sh" restart
+pm2 restart ecosystem.config.js
