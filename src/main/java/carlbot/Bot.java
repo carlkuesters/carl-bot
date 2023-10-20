@@ -13,7 +13,6 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
-import javax.security.auth.login.LoginException;
 import java.sql.SQLException;
 import java.util.HashMap;
 
@@ -24,7 +23,7 @@ public class Bot extends ListenerAdapter {
     private Command[] guildVoiceCommands;
     private HashMap<Guild, Boolean> isPlayingAudioInGuilds = new HashMap<>();
 
-    void connect() throws SQLException, LoginException {
+    void connect() throws SQLException {
         String[] databaseSecrets = FileManager.getFileLines("./database.ini");
         database = new Database("mysql", "//localhost/" + databaseSecrets[2], databaseSecrets[0], databaseSecrets[1]);
         database.connect();

@@ -6,7 +6,7 @@ import carlbot.commands.audio.MessageAudioCommand;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.source.local.LocalAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import net.dv8tion.jda.api.entities.AudioChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class MaxiWritesHiCommand extends MessageAudioCommand {
@@ -21,9 +21,7 @@ public class MaxiWritesHiCommand extends MessageAudioCommand {
     public boolean isMatching(MessageReceivedEvent event, String content) {
         if (event.getAuthor().getName().equals("GameUser21")) {
             String contentLowerCase = content.toLowerCase();
-            if (contentLowerCase.equals("hi") || (contentLowerCase.startsWith("hi") && contentLowerCase.contains("^^"))) {
-                return true;
-            }
+            return contentLowerCase.equals("hi") || (contentLowerCase.startsWith("hi") && contentLowerCase.contains("^^"));
         }
         return false;
     }

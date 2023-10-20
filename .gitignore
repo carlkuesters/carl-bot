@@ -64,4 +64,7 @@ nbactions.xml
 *.iml
 
 # CarlBot specific #
-tmp/
+database.ini
+discord.ini
+spotify.ini
+tmp

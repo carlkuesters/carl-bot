@@ -1,10 +1,10 @@
 package carlbot.commands.audio;
 
-import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
+import net.dv8tion.jda.api.entities.channel.unions.AudioChannelUnion;
 import net.dv8tion.jda.api.managers.AudioManager;
-import net.dv8tion.jda.internal.entities.VoiceChannelImpl;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public class AudioUtility {
 
     public static AudioChannel getCurrentOrBestAudioChannel(Guild guild) {
         AudioManager audioManager = guild.getAudioManager();
-        AudioChannel connectedChannel = audioManager.getConnectedChannel();
+        AudioChannelUnion connectedChannel = audioManager.getConnectedChannel();
         if (connectedChannel != null) {
             return connectedChannel;
         }
@@ -24,8 +24,7 @@ public class AudioUtility {
         VoiceChannel maximumMembersVoiceChannel = null;
         int maximumMembers = 0;
         for (VoiceChannel voiceChannel : voiceChannels) {
-            VoiceChannelImpl voiceChannelImpl = (VoiceChannelImpl) voiceChannel;
-            int members = voiceChannelImpl.getMembers().size();
+            int members = voiceChannel.getMembers().size();
             if (members > maximumMembers) {
                 maximumMembersVoiceChannel = voiceChannel;
                 maximumMembers = members;

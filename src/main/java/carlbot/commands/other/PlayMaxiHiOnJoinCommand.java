@@ -5,11 +5,10 @@ import carlbot.commands.audio.GuildVoiceAudioCommand;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.source.local.LocalAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import net.dv8tion.jda.api.entities.AudioChannel;
+import net.dv8tion.jda.api.entities.channel.unions.AudioChannelUnion;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.guild.voice.GenericGuildVoiceEvent;
-import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
-import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent;
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceUpdateEvent;
 
 public class PlayMaxiHiOnJoinCommand extends GuildVoiceAudioCommand {
 
@@ -22,15 +21,16 @@ public class PlayMaxiHiOnJoinCommand extends GuildVoiceAudioCommand {
     @Override
     public boolean isMatching(GenericGuildVoiceEvent event, String content) {
         if (!bot.isPlayingAudioInGuild(event.getGuild())) {
-            if ((event instanceof GuildVoiceJoinEvent) || (event instanceof GuildVoiceMoveEvent)) {
-                Member botGuildMember = event.getGuild().getMember(event.getJDA().getSelfUser());
-                AudioChannel botChannel = botGuildMember.getVoiceState().getChannel();
-                if (event.getVoiceState().getChannel() == botChannel) {
-                    return true;
-                }
+            if (event instanceof GuildVoiceUpdateEvent guildVoiceUpdateEvent) {
+                return guildVoiceUpdateEvent.getChannelJoined() == getBotAudioChannel(event);
             }
         }
         return false;
+    }
+
+    private AudioChannelUnion getBotAudioChannel(GenericGuildVoiceEvent event) {
+        Member botGuildMember = event.getGuild().getMember(event.getJDA().getSelfUser());
+        return botGuildMember.getVoiceState().getChannel();
     }
 
     @Override
