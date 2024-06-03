@@ -34,7 +34,7 @@ public class PlayCommand extends MessageAudioCommand {
 
     public PlayCommand(Bot bot) {
         super(bot, "!play");
-        audioPlayerManager.registerSourceManager(new YoutubeAudioSourceManager(true));
+        audioPlayerManager.registerSourceManager(new YoutubeAudioSourceManager());
         audioPlayerManager.registerSourceManager(SoundCloudAudioSourceManager.createDefault());
         audioPlayerManager.registerSourceManager(new BandcampAudioSourceManager());
         audioPlayerManager.registerSourceManager(new VimeoAudioSourceManager());
