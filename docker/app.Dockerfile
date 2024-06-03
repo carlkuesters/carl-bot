@@ -3,7 +3,7 @@ FROM eclipse-temurin:17-jre-alpine
 WORKDIR /home
 
 COPY target/carl-bot-1.0.0-jar-with-dependencies.jar ./
-COPY assets assets
+COPY data data
 
 ARG DB_ROOT_PASSWORD
 ARG DISCORD_BOT_TOKEN
