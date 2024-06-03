@@ -1,0 +1,53 @@
+pipeline {
+    agent any
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        skipDefaultCheckout()
+        ansiColor('xterm')
+    }
+    parameters {
+        string(name: 'VERSION', defaultValue: 'master')
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+                sh 'git checkout $VERSION'
+            }
+        }
+        stage('Build') {
+            agent {
+                docker {
+                    image 'maven:3.9.6-eclipse-temurin-17-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh 'mvn clean install'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'mv target data docker'
+                dir ('docker') {
+                    withCredentials([
+                        string(credentialsId: 'db-root-password', variable: 'DB_ROOT_PASSWORD'),
+                        string(credentialsId: 'discord-bot-token', variable: 'DISCORD_BOT_TOKEN'),
+                        string(credentialsId: 'flickr-api-key', variable: 'FLICKR_API_KEY'),
+                        string(credentialsId: 'flickr-shared-secret', variable: 'FLICKR_SHARED_SECRET'),
+                        string(credentialsId: 'spotify-client-id', variable: 'SPOTIFY_CLIENT_ID'),
+                        string(credentialsId: 'spotify-client-secret', variable: 'SPOTIFY_CLIENT_SECRET')
+                    ]) {
+                        sh 'docker compose build --no-cache'
+                        sh 'docker compose up -d'
+                    }
+                }
+            }
+        }
+    }
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}

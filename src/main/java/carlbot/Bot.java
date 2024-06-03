@@ -25,7 +25,7 @@ public class Bot extends ListenerAdapter {
 
     void connect() throws SQLException {
         String[] databaseSecrets = FileManager.getFileLines("./database.ini");
-        database = new Database("mysql", "//localhost/" + databaseSecrets[2], databaseSecrets[0], databaseSecrets[1]);
+        database = new Database("mysql", databaseSecrets[0], databaseSecrets[1], databaseSecrets[2]);
         database.connect();
         initializeCommands();
         String discordBotToken = FileManager.getFileContent("./discord.ini");
