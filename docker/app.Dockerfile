@@ -1,4 +1,5 @@
-FROM eclipse-temurin:17-jre-alpine
+# OpenCV requires focal instead of alpine
+FROM eclipse-temurin:17-jre-focal
 
 WORKDIR /home
 
