@@ -28,7 +28,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'mv target docker'
+                sh 'mv target data docker'
                 dir ('docker') {
                     withCredentials([
                         string(credentialsId: 'db-root-password', variable: 'DB_ROOT_PASSWORD'),
