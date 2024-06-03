@@ -4,12 +4,7 @@ import carlbot.Bot;
 import carlbot.FileManager;
 import carlbot.commands.audio.MessageAudioCommand;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
-import com.sedmelluq.discord.lavaplayer.source.bandcamp.BandcampAudioSourceManager;
-import com.sedmelluq.discord.lavaplayer.source.http.HttpAudioSourceManager;
-import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager;
-import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceManager;
-import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager;
-import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.track.TrackMarker;
 import com.sedmelluq.discord.lavaplayer.track.TrackMarkerHandler;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -34,12 +29,7 @@ public class PlayCommand extends MessageAudioCommand {
 
     public PlayCommand(Bot bot) {
         super(bot, "!play");
-        audioPlayerManager.registerSourceManager(new YoutubeAudioSourceManager());
-        audioPlayerManager.registerSourceManager(SoundCloudAudioSourceManager.createDefault());
-        audioPlayerManager.registerSourceManager(new BandcampAudioSourceManager());
-        audioPlayerManager.registerSourceManager(new VimeoAudioSourceManager());
-        audioPlayerManager.registerSourceManager(new TwitchStreamAudioSourceManager());
-        audioPlayerManager.registerSourceManager(new HttpAudioSourceManager());
+        AudioSourceManagers.registerRemoteSources(audioPlayerManager);
 
         String[] spotifySecrets = FileManager.getFileLines("./spotify.ini");
         spotifyApi = new SpotifyApi.Builder()

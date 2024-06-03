@@ -12,7 +12,7 @@
         <version.jda>5.0.0-beta.24</version.jda>
         <version.json>20240303</version.json>
         <version.jsoup>1.17.2</version.jsoup>
-        <version.lavaplayer>1.4.3</version.lavaplayer>
+        <version.lavaplayer>2.1.2</version.lavaplayer>
         <version.maven-assembly-plugin>3.7.1</version.maven-assembly-plugin>
         <version.maven-compiler-plugin>3.13.0</version.maven-compiler-plugin>
         <version.mysql-connector-j>8.4.0</version.mysql-connector-j>
@@ -21,11 +21,6 @@
         <version.spotify-web-api-java>8.4.0</version.spotify-web-api-java>
     </properties>
     <repositories>
-        <repository>
-            <id>dv8tion</id>
-            <name>m2-dv8tion</name>
-            <url>https://m2.dv8tion.net/releases</url>
-        </repository>
         <repository>
             <id>jitpack</id>
             <url>https://jitpack.io</url>
@@ -38,8 +33,8 @@
             <version>${version.jda}</version>
         </dependency>
         <dependency>
-            <groupId>com.github.walkyst</groupId>
-            <artifactId>lavaplayer-fork</artifactId>
+            <groupId>dev.arbjerg</groupId>
+            <artifactId>lavaplayer</artifactId>
             <version>${version.lavaplayer}</version>
         </dependency>
         <dependency>
