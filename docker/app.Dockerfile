@@ -12,7 +12,7 @@ ARG FLICKR_API_KEY
 ARG FLICKR_SHARED_SECRET
 ARG SPOTIFY_CLIENT_ID
 ARG SPOTIFY_CLIENT_SECRET
-RUN echo //db:3306/cards > database.ini && \
+RUN echo //db:3306/carlbot > database.ini && \
     echo root >> database.ini && \
     echo $DB_ROOT_PASSWORD >> database.ini && \
     echo $DISCORD_BOT_TOKEN > discord.ini && \
