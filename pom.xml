@@ -3,22 +3,22 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.carlkuesters.carlbot</groupId>
     <artifactId>carl-bot</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.commons-codec>1.16.0</version.commons-codec>
-        <version.flickr4java>3.0.8</version.flickr4java>
-        <version.gson>2.10.1</version.gson>
-        <version.jda>5.0.0-beta.15</version.jda>
-        <version.json>20231013</version.json>
-        <version.jsoup>1.16.1</version.jsoup>
+        <version.commons-codec>1.17.0</version.commons-codec>
+        <version.flickr4java>3.0.9</version.flickr4java>
+        <version.gson>2.11.0</version.gson>
+        <version.jda>5.0.0-beta.24</version.jda>
+        <version.json>20240303</version.json>
+        <version.jsoup>1.17.2</version.jsoup>
         <version.lavaplayer>1.3.78</version.lavaplayer>
-        <version.maven-assembly-plugin>3.6.0</version.maven-assembly-plugin>
-        <version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
-        <version.mysql-connector-j>8.1.0</version.mysql-connector-j>
-        <version.opencv>4.7.0-0</version.opencv>
-        <version.slf4j>2.0.9</version.slf4j>
-        <version.spotify-web-api-java>8.3.0</version.spotify-web-api-java>
+        <version.maven-assembly-plugin>3.7.1</version.maven-assembly-plugin>
+        <version.maven-compiler-plugin>3.13.0</version.maven-compiler-plugin>
+        <version.mysql-connector-j>8.4.0</version.mysql-connector-j>
+        <version.opencv>4.9.0-0</version.opencv>
+        <version.slf4j>2.0.13</version.slf4j>
+        <version.spotify-web-api-java>8.4.0</version.spotify-web-api-java>
     </properties>
     <repositories>
         <repository>
