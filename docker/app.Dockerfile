@@ -14,12 +14,12 @@ ARG SPOTIFY_CLIENT_ID
 ARG SPOTIFY_CLIENT_SECRET
 RUN echo //db:3306/carlbot > database.ini && \
     echo root >> database.ini && \
-    echo $DB_ROOT_PASSWORD >> database.ini && \
-    echo $DISCORD_BOT_TOKEN > discord.ini && \
+    echo -n $DB_ROOT_PASSWORD >> database.ini && \
+    echo -n $DISCORD_BOT_TOKEN > discord.ini && \
     echo $FLICKR_API_KEY > flickr.ini && \
-    echo $FLICKR_SHARED_SECRET >> flickr.ini && \
+    echo -n $FLICKR_SHARED_SECRET >> flickr.ini && \
     echo $SPOTIFY_CLIENT_ID > spotify.ini && \
-    echo $SPOTIFY_CLIENT_SECRET >> spotify.ini && \
+    echo -n $SPOTIFY_CLIENT_SECRET >> spotify.ini && \
     mkdir tmp
 
 ENTRYPOINT ["java", "-jar", "carl-bot-1.0.0-jar-with-dependencies.jar"]
